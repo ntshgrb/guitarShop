@@ -1,11 +1,12 @@
 import { useAppSelector } from '../../hooks';
 import CatalogCard from '../../components/catalog-card/catalog-card';
-import { MAX_GUITARS_COUNT } from '../../const';
+import Pagination from '../../components/pagination/pagination';
+import { getGuitarsByPage } from '../../store/selectors/selectors';
 
 function CatalogPage(): JSX.Element {
-  const guitarsList = useAppSelector((state) => state.GUITARS.guitarsList);
-
-  const limitedGuitarsList = guitarsList.slice(0, MAX_GUITARS_COUNT);
+  const isDataLoading = useAppSelector((state) => state.GUITARS.loading);
+  const currentPage = useAppSelector((state) => state.GUITARS.currentCatalogPage);
+  const currentGuitarsList = useAppSelector(getGuitarsByPage(currentPage));
 
   return (
     <main className="page-content">
@@ -80,23 +81,18 @@ function CatalogPage(): JSX.Element {
               <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию"></button>
             </div>
           </div>
-          <div className="cards catalog__cards">
-            {
-              limitedGuitarsList.map( (guitar) => <CatalogCard guitarItem={guitar} key={guitar.id}/>)
-            }
-          </div>
-          <div className="pagination page-content__pagination">
-            <ul className="pagination__list">
-              <li className="pagination__page pagination__page--active"><a className="link pagination__page-link" href="1">1</a>
-              </li>
-              <li className="pagination__page"><a className="link pagination__page-link" href="2">2</a>
-              </li>
-              <li className="pagination__page"><a className="link pagination__page-link" href="3">3</a>
-              </li>
-              <li className="pagination__page pagination__page--next" id="next"><a className="link pagination__page-link" href="2">Далее</a>
-              </li>
-            </ul>
-          </div>
+          {isDataLoading? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              <div className="cards catalog__cards">
+                {
+                  currentGuitarsList.map( (guitar) => <CatalogCard guitarItem={guitar} key={guitar.id}/>)
+                }
+              </div>
+              <Pagination />
+            </>
+          )}
         </div>
       </div>
     </main>

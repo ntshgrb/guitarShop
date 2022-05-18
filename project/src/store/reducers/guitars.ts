@@ -4,11 +4,17 @@ import { NameSpaces } from '../../const';
 
 type InitialState = {
   guitarsList: Guitar[],
+  guitarsCount: number;
+  loading: boolean;
+  currentCatalogPage: number;
 }
 
 
 const initialState: InitialState = {
   guitarsList: [],
+  guitarsCount: 0,
+  loading: true,
+  currentCatalogPage: 1,
 };
 
 export const guitars = createSlice({
@@ -17,6 +23,8 @@ export const guitars = createSlice({
   reducers: {
     loadGuitarsList: (state, action) => {
       state.guitarsList = action.payload;
+      state.guitarsCount = action.payload.length;
+      state.loading = false;
     },
   },
 });
