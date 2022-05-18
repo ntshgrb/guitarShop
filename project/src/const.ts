@@ -7,3 +7,9 @@ export enum APIRoute {
 }
 
 export const MAX_GUITARS_COUNT = 9;
+
+export enum AppRoute {
+  Root = '/',
+  Catalog = '/catalog',
+  CatalogPage = 'catalog/',
+}
