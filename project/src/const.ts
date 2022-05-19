@@ -10,6 +10,7 @@ export const MAX_GUITARS_COUNT = 9;
 
 export enum AppRoute {
   Root = '/',
-  Catalog = '/catalog',
-  CatalogPage = 'catalog/',
+  CatalogPage = 'catalog/page_:pageNumber',
+  CatalogPageNumber = '/catalog/page_',
+  DefaultCatalogPage = '/catalog/page_1',
 }

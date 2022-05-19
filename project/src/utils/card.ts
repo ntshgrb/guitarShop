@@ -2,8 +2,8 @@ export const getPreviewImage = (initialPath: string) => {
   const imageId = /\d+/.exec(initialPath);
 
   return {
-    src: `img/content/catalog-product-${imageId}.jpg`,
-    srcSet: `img/content/catalog-product-${imageId}@2x.jpg 2x`,
+    src: `../img/content/catalog-product-${imageId}.jpg`,
+    srcSet: `../img/content/catalog-product-${imageId}@2x.jpg 2x`,
   };
 };
 

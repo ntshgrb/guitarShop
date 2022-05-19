@@ -1,6 +1,6 @@
 import Layout from '../layout/layout';
 import Catalog from '../../pages/catalog-page/catalog-page';
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 function App(): JSX.Element {
@@ -8,8 +8,8 @@ function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route index element={<Catalog />} />
-          <Route path={AppRoute.Catalog} element={<Catalog />} />
+          <Route index element={<Navigate to={AppRoute.DefaultCatalogPage} />} />
+          <Route path={AppRoute.CatalogPage} element={<Catalog />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -26,7 +26,10 @@ export const guitars = createSlice({
       state.guitarsCount = action.payload.length;
       state.loading = false;
     },
+    setCurrentCatalogPage: (state, action) => {
+      state.currentCatalogPage = action.payload;
+    },
   },
 });
 
-export const { loadGuitarsList } = guitars.actions;
+export const { loadGuitarsList, setCurrentCatalogPage } = guitars.actions;
