@@ -13,4 +13,6 @@ export enum AppRoute {
   CatalogPage = 'catalog/page_:pageNumber',
   CatalogPageNumber = '/catalog/page_',
   DefaultCatalogPage = '/catalog/page_1',
+  GuitarPage = '/guitar/',
+  GuitarPageId = '/guitar/:id'
 }

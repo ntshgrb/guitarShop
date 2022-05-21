@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import { Guitar } from '../../types/guitar';
 import { getPreviewImage, getFormattedPrice, getRatingStars } from '../../utils/card';
 
@@ -6,7 +8,7 @@ type CatalogCardProps = {
 }
 
 function CatalogCard({guitarItem}: CatalogCardProps): JSX.Element {
-  const { previewImg, rating, name, price } = guitarItem;
+  const { previewImg, rating, name, price, id } = guitarItem;
 
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
@@ -45,7 +47,12 @@ function CatalogCard({guitarItem}: CatalogCardProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini" href="#">Подробнее</a>
+        <Link
+          className="button button--mini"
+          to={ `${AppRoute.GuitarPage}${id}`}
+        >
+          Подробнее
+        </Link>
         <a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
       </div>
     </div>
