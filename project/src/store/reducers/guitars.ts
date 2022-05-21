@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Guitar } from '../../types/guitar';
-import { NameSpaces } from '../../const';
+import { Guitar, GuitarData } from '../../types/guitar';
+import { NameSpace } from '../../const';
 
 type InitialState = {
   guitarsList: Guitar[],
   guitarsCount: number;
   loading: boolean;
   currentCatalogPage: number;
+  currentGuitarData: GuitarData | null;
 }
 
 
@@ -15,10 +16,11 @@ const initialState: InitialState = {
   guitarsCount: 0,
   loading: true,
   currentCatalogPage: 1,
+  currentGuitarData: null,
 };
 
 export const guitars = createSlice({
-  name: NameSpaces.guitars,
+  name: NameSpace.guitars,
   initialState,
   reducers: {
     loadGuitarsList: (state, action) => {
@@ -29,7 +31,10 @@ export const guitars = createSlice({
     setCurrentCatalogPage: (state, action) => {
       state.currentCatalogPage = action.payload;
     },
+    loadGuitarData: (state, action) => {
+      state.currentGuitarData = action.payload;
+    },
   },
 });
 
-export const { loadGuitarsList, setCurrentCatalogPage } = guitars.actions;
+export const { loadGuitarsList, setCurrentCatalogPage, loadGuitarData } = guitars.actions;

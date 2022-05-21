@@ -1,4 +1,4 @@
-export enum NameSpaces {
+export enum NameSpace {
   guitars = 'GUITARS',
 }
 
