@@ -1,7 +1,7 @@
 function Header(): JSX.Element {
   return (
     <header className="header" id="header">
-      <div className="container header__wrapper"><a className="header__logo logo"><img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип" /></a>
+      <div className="container header__wrapper"><a className="header__logo logo"><img className="logo__img" width="70" height="70" src="../img/svg/logo.svg" alt="Логотип" /></a>
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li><a className="link main-nav__link link--current" href="#">Каталог</a>
