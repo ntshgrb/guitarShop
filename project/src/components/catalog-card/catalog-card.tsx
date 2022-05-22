@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, ratingStarSize } from '../../const';
 import { Guitar } from '../../types/guitar';
-import { getPreviewImage, getFormattedPrice, getRatingStars } from '../../utils/card';
+import { getPreviewImage, getFormattedPrice } from '../../utils/card';
+import RatingStars from '../rating-stars/rating-stars';
 
 type CatalogCardProps = {
   guitarItem: Guitar
@@ -12,7 +13,6 @@ function CatalogCard({guitarItem}: CatalogCardProps): JSX.Element {
 
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
-  const ratingStars = getRatingStars(rating);
 
   return (
     <div className="product-card">
@@ -26,13 +26,10 @@ function CatalogCard({guitarItem}: CatalogCardProps): JSX.Element {
       <div className="product-card__info">
         <div className="rate product-card__rate">
 
-          {
-            ratingStars.map( (ratingStar) =>  (
-              <svg key={ratingStar[0]} width="12" height="11" aria-hidden="true">
-                <use xlinkHref={ratingStar[1]}></use>
-              </svg>
-            ))
-          }
+          <RatingStars
+            ratingCount={rating}
+            starSize={ratingStarSize}
+          />
 
           <p className="visually-hidden">Рейтинг: Хорошо</p>
           <p className="rate__count">
