@@ -7,7 +7,7 @@ type InitialState = {
   guitarsCount: number;
   loading: boolean;
   currentCatalogPage: number;
-  currentGuitarData: GuitarData | null;
+  currentGuitarData: GuitarData;
 }
 
 
@@ -16,7 +16,10 @@ const initialState: InitialState = {
   guitarsCount: 0,
   loading: true,
   currentCatalogPage: 1,
-  currentGuitarData: null,
+  currentGuitarData: {
+    guitar: null,
+    comments: [],
+  },
 };
 
 export const guitars = createSlice({
@@ -32,7 +35,9 @@ export const guitars = createSlice({
       state.currentCatalogPage = action.payload;
     },
     loadGuitarData: (state, action) => {
-      state.currentGuitarData = action.payload;
+      state.currentGuitarData.guitar = action.payload.guitarData;
+      state.currentGuitarData.comments = action.payload.userComments;
+
     },
   },
 });

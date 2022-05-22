@@ -13,6 +13,6 @@ export type Guitar = {
 }
 
 export type GuitarData = {
-  guitar: Guitar,
-  comments: UserComment[],
+  guitar: Guitar | null,
+  comments: UserComment[] | null,
 }
