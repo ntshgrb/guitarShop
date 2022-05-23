@@ -11,6 +11,11 @@ export const ratingStarSizeBigger = {
   heigth: 14,
 };
 
+export const ratingStarSizeBig = {
+  width: 16,
+  heigth: 16,
+};
+
 export enum NameSpace {
   guitars = 'GUITARS',
 }
@@ -33,3 +38,5 @@ export const guitarTypes = {
   electric: 'Электрогитара',
   ukulele: 'Укулеле',
 };
+
+export const Rating = new Map([ [1, 'Очень плохо'], [2, 'Плохо'], [3, 'Приемлемо'], [4, 'Хорошо'], [5, 'Отлично'] ]);

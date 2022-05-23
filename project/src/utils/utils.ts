@@ -13,3 +13,5 @@ export const getFormattedPrice = (initialPrice: number) => (
       currency: 'RUB',
       minimumFractionDigits: 0,
     }));
+
+export const getReviewDate = (date: string) => new Date(date).toLocaleString('ru', {day: 'numeric', month: 'long'});

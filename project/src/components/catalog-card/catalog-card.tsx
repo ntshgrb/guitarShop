@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, ratingStarSize } from '../../const';
 import { Guitar } from '../../types/guitar';
-import { getPreviewImage, getFormattedPrice } from '../../utils/card';
+import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
 import RatingStars from '../rating-stars/rating-stars';
 
 type CatalogCardProps = {

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { NameSpace } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchGuitarDataAction } from '../../store/api-actions';
-import { getPreviewImage, getFormattedPrice } from '../../utils/card';
+import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
 import { ratingStarSizeBigger } from '../../const';
 import RatingStars from '../../components/rating-stars/rating-stars';
 import Reviews from '../../components/reviews/reviews';
@@ -13,7 +13,7 @@ function GuitarPage(): JSX.Element | null {
   const pathParams = useParams();
   const dispatch = useAppDispatch();
 
-  const { guitar } = useAppSelector((state) => state[NameSpace.guitars].currentGuitarData);
+  const { guitar, comments } = useAppSelector((state) => state[NameSpace.guitars].currentGuitarData);
 
   const guitarId = pathParams.id;
 
@@ -58,16 +58,19 @@ function GuitarPage(): JSX.Element | null {
             <h2 className="product-container__title title title--big title--uppercase">{name}</h2>
 
             <div className="rate product-container__rating">
-
               <RatingStars
                 starSize={ratingStarSizeBigger}
                 ratingCount={rating}
               />
-
               <p className="visually-hidden">Оценка: Хорошо</p>
             </div>
 
-            <Tabs vendorCode={vendorCode} guitarType={guitarType} stringCount={stringCount} description={description} />
+            <Tabs
+              vendorCode={vendorCode}
+              guitarType={guitarType}
+              stringCount={stringCount}
+              description={description}
+            />
 
           </div>
 
@@ -78,7 +81,7 @@ function GuitarPage(): JSX.Element | null {
           </div>
         </div>
 
-        <Reviews />
+        <Reviews comments={comments} />
 
       </div>
     </main>
