@@ -13,7 +13,7 @@ function GuitarPage(): JSX.Element | null {
   const pathParams = useParams();
   const dispatch = useAppDispatch();
 
-  const { guitar, comments } = useAppSelector((state) => state[NameSpace.guitars].currentGuitarData);
+  const { guitar } = useAppSelector((state) => state[NameSpace.guitars].currentGuitarData);
 
   const guitarId = pathParams.id;
 
@@ -81,7 +81,7 @@ function GuitarPage(): JSX.Element | null {
           </div>
         </div>
 
-        <Reviews comments={comments} />
+        <Reviews />
 
       </div>
     </main>

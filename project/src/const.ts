@@ -1,5 +1,6 @@
 export const MAX_GUITARS_COUNT = 9;
 export const MAX_GUITAR_RATING = 5;
+export const REVIEWS_STEP = 3;
 
 export const ratingStarSize = {
   width: 12,

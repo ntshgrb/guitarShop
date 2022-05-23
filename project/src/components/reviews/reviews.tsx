@@ -1,14 +1,22 @@
-import { UserComment } from '../../types/comment';
 import RatingStars from '../rating-stars/rating-stars';
-import { ratingStarSizeBig, Rating } from '../../const';
+import { ratingStarSizeBig, Rating, REVIEWS_STEP } from '../../const';
 import { getReviewDate } from '../../utils/utils';
-import { memo } from 'react';
+import { getComments } from '../../store/selectors/selectors';
+import { memo, useState } from 'react';
+import { useAppSelector } from '../../hooks';
 
-type ReviewsProps = {
-  comments: UserComment[] | null,
-}
+function Reviews(): JSX.Element | null {
+  const [visibleComments, setVisibleComments] = useState(REVIEWS_STEP);
+  let reviewsButtonIsHidden = false;
 
-function Reviews({ comments }: ReviewsProps): JSX.Element | null {
+  const hideMoreCommentsButton = () => {
+    reviewsButtonIsHidden = true;
+  };
+
+  const comments = useAppSelector(getComments(visibleComments, hideMoreCommentsButton));
+
+  const onMoreReviewsClick = () => setVisibleComments((prevState) => prevState + REVIEWS_STEP);
+
   if (!comments) {
     return null;
   }
@@ -56,9 +64,18 @@ function Reviews({ comments }: ReviewsProps): JSX.Element | null {
         ))
       }
 
-      <button className="button button--medium reviews__more-button">Показать еще отзывы</button>
+      <button
+        style={reviewsButtonIsHidden ? { pointerEvents: 'none', opacity: '0'} : undefined}
+        onClick={onMoreReviewsClick}
+        className="button button--medium reviews__more-button"
+      >
+          Показать еще отзывы
+      </button>
 
-      <a onClick={onUpButtonClick} className="button button--up button--red-border button--big reviews__up-button">
+      <a
+        onClick={onUpButtonClick}
+        className="button button--up button--red-border button--big reviews__up-button"
+      >
         Наверх
       </a>
     </section>
