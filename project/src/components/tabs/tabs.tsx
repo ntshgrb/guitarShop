@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { guitarTypes } from '../../const';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { guitarTypes, tabsTypes } from '../../const';
 
 type TabsProps = {
   vendorCode: string,
@@ -9,26 +10,34 @@ type TabsProps = {
 }
 
 function Tabs({ vendorCode, guitarType, stringCount, description }: TabsProps): JSX.Element {
-  enum tabsTypes {
-    Characteristics = 'characteristics',
-    Description = 'description',
-  }
-
+  const location = useLocation();
   const [ characteristicsTabIsActive, changeCharacteristicsTab ] = useState(true);
   const [ descriptionTabIsActive, changeDescriptionTab ] = useState(false);
 
+  const toggleActiveTab = (value: string) => {
+    switch (value) {
+      case tabsTypes.Characteristics:
+        changeCharacteristicsTab(true);
+        changeDescriptionTab(false);
+        break;
+      case tabsTypes.Description:
+        changeCharacteristicsTab(false);
+        changeDescriptionTab(true);
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (location.hash) {
+      const activeTab = location.hash.slice(1);
+      toggleActiveTab(activeTab);
+    }
+  }, []);
+
+
   const onTabClick = (event: React.SyntheticEvent<HTMLAnchorElement>) => {
     if(event.currentTarget.dataset.tabType) {
-      switch (event.currentTarget.dataset.tabType) {
-        case tabsTypes.Characteristics:
-          changeCharacteristicsTab(true);
-          changeDescriptionTab(false);
-          break;
-        case tabsTypes.Description:
-          changeCharacteristicsTab(false);
-          changeDescriptionTab(true);
-          break;
-      }
+      toggleActiveTab(event.currentTarget.dataset.tabType);
     }
   };
 

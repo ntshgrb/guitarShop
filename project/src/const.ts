@@ -40,3 +40,8 @@ export const guitarTypes = {
 };
 
 export const Rating = new Map([ [1, 'Очень плохо'], [2, 'Плохо'], [3, 'Приемлемо'], [4, 'Хорошо'], [5, 'Отлично'] ]);
+
+export enum tabsTypes {
+  Characteristics = 'characteristics',
+  Description = 'description',
+}
