@@ -2,6 +2,7 @@ import { UserComment } from '../../types/comment';
 import RatingStars from '../rating-stars/rating-stars';
 import { ratingStarSizeBig, Rating } from '../../const';
 import { getReviewDate } from '../../utils/utils';
+import { memo } from 'react';
 
 type ReviewsProps = {
   comments: UserComment[] | null,
@@ -64,4 +65,4 @@ function Reviews({ comments }: ReviewsProps): JSX.Element | null {
   );
 }
 
-export default Reviews;
+export default memo(Reviews);

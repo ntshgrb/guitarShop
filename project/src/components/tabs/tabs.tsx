@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { guitarTypes, tabsTypes } from '../../const';
 
@@ -88,4 +88,4 @@ function Tabs({ vendorCode, guitarType, stringCount, description }: TabsProps): 
   );
 }
 
-export default Tabs;
+export default memo(Tabs);

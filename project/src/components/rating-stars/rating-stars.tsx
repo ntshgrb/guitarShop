@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { MAX_GUITAR_RATING } from '../../const';
 
 type RatingStarsProps = {
@@ -32,4 +33,4 @@ function RatingStars({ ratingCount, starSize }: RatingStarsProps): JSX.Element {
   );
 }
 
-export default RatingStars;
+export default memo(RatingStars);
