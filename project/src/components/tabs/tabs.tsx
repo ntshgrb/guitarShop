@@ -50,7 +50,7 @@ function Tabs({ vendorCode, guitarType, stringCount, description }: TabsProps): 
       >
         Описание
       </a>
-      <div className="tabs__content" id="characteristics">
+      <div className="tabs__content">
         <table className="tabs__table" hidden={!characteristicsTabIsActive}>
           <tbody>
             <tr className="tabs__table-row">

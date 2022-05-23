@@ -12,6 +12,15 @@ function Reviews({ comments }: ReviewsProps): JSX.Element | null {
     return null;
   }
 
+  const onUpButtonClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <section className="reviews">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
@@ -47,7 +56,10 @@ function Reviews({ comments }: ReviewsProps): JSX.Element | null {
       }
 
       <button className="button button--medium reviews__more-button">Показать еще отзывы</button>
-      <a className="button button--up button--red-border button--big reviews__up-button" href="#header">Наверх</a>
+
+      <a onClick={onUpButtonClick} className="button button--up button--red-border button--big reviews__up-button">
+        Наверх
+      </a>
     </section>
   );
 }
