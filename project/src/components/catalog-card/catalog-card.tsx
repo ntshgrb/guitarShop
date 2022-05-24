@@ -46,7 +46,7 @@ function CatalogCard({guitarItem}: CatalogCardProps): JSX.Element {
       <div className="product-card__buttons">
         <Link
           className="button button--mini"
-          to={ `${AppRoute.GuitarPage}${id}`}
+          to={ `${AppRoute.ProductPage}${id}`}
         >
           Подробнее
         </Link>

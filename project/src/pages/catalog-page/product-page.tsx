@@ -9,7 +9,7 @@ import RatingStars from '../../components/rating-stars/rating-stars';
 import Comments from '../../components/comments/comments';
 import Tabs from '../../components/tabs/tabs';
 
-function GuitarPage(): JSX.Element | null {
+function ProductPage(): JSX.Element | null {
   const pathParams = useParams();
   const dispatch = useAppDispatch();
 
@@ -88,4 +88,4 @@ function GuitarPage(): JSX.Element | null {
   );
 }
 
-export default GuitarPage;
+export default ProductPage;

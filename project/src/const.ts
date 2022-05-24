@@ -30,8 +30,8 @@ export enum AppRoute {
   CatalogPage = 'catalog/page_:pageNumber',
   CatalogPageNumber = '/catalog/page_',
   DefaultCatalogPage = '/catalog/page_1',
-  GuitarPage = '/guitar/',
-  GuitarPageId = '/guitar/:id'
+  ProductPage = '/guitar/',
+  ProductPageId = '/guitar/:id'
 }
 
 export const guitarTypes = {
@@ -40,7 +40,7 @@ export const guitarTypes = {
   ukulele: 'Укулеле',
 };
 
-export const Rating = new Map([ [1, 'Очень плохо'], [2, 'Плохо'], [3, 'Приемлемо'], [4, 'Хорошо'], [5, 'Отлично'] ]);
+export const Rating = new Map([ [1, 'Ужасно'], [2, 'Плохо'], [3, 'Нормально'], [4, 'Хорошо'], [5, 'Отлично'] ]);
 
 export enum tabsTypes {
   Characteristics = 'characteristics',
