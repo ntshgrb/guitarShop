@@ -6,7 +6,7 @@ import { fetchGuitarDataAction } from '../../store/api-actions';
 import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
 import { ratingStarSizeBigger } from '../../const';
 import RatingStars from '../../components/rating-stars/rating-stars';
-import Reviews from '../../components/reviews/reviews';
+import Comments from '../../components/comments/comments';
 import Tabs from '../../components/tabs/tabs';
 
 function GuitarPage(): JSX.Element | null {
@@ -81,7 +81,7 @@ function GuitarPage(): JSX.Element | null {
           </div>
         </div>
 
-        <Reviews />
+        <Comments />
 
       </div>
     </main>

@@ -5,7 +5,7 @@ import { getComments } from '../../store/selectors/selectors';
 import { memo, useState } from 'react';
 import { useAppSelector } from '../../hooks';
 
-function Reviews(): JSX.Element | null {
+function Comments(): JSX.Element | null {
   const [visibleComments, setVisibleComments] = useState(REVIEWS_STEP);
   let reviewsButtonIsHidden = false;
 
@@ -82,4 +82,4 @@ function Reviews(): JSX.Element | null {
   );
 }
 
-export default memo(Reviews);
+export default memo(Comments);

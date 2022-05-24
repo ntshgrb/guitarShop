@@ -12,12 +12,16 @@ function Pagination(): JSX.Element {
   const currentCatalogPage = useAppSelector((state) => state.GUITARS.currentCatalogPage);
   const totalPages = Math.ceil(guitarsCount / MAX_GUITARS_COUNT);
 
-  if (param.id && +param.id !== currentCatalogPage) {
-    setCurrentCatalogPage(+param.id);
+  if (param.pageNumber && +param.pageNumber !== currentCatalogPage) {
+    dispatch(setCurrentCatalogPage(+param.pageNumber));
   }
 
   const onPageClick = (page: number) => {
     dispatch(setCurrentCatalogPage(page));
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -56,7 +60,7 @@ function Pagination(): JSX.Element {
           (currentCatalogPage < totalPages) ? (
             <li className="pagination__page pagination__page--next" id="next">
               <Link
-                onClick={() => onPageClick(currentCatalogPage + 1)}
+                onClick={() => {onPageClick(currentCatalogPage + 1);}}
                 className="link pagination__page-link"
                 to={`${AppRoute.CatalogPageNumber}${(currentCatalogPage + 1).toString()}`}
               >
