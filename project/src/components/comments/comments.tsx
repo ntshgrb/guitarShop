@@ -2,10 +2,14 @@ import RatingStars from '../rating-stars/rating-stars';
 import { ratingStarSizeBig, Rating, REVIEWS_STEP } from '../../const';
 import { getReviewDate } from '../../utils/utils';
 import { getComments } from '../../store/selectors/selectors';
-import { memo, useState } from 'react';
+import { Dispatch, memo, SetStateAction, useState } from 'react';
 import { useAppSelector } from '../../hooks';
 
-function Comments(): JSX.Element | null {
+type CommentsProps = {
+  setModalIsVisible: Dispatch<SetStateAction<boolean>>,
+}
+
+function Comments({ setModalIsVisible }: CommentsProps): JSX.Element | null {
   const [visibleComments, setVisibleComments] = useState(REVIEWS_STEP);
   let reviewsButtonIsHidden = false;
 
@@ -33,7 +37,11 @@ function Comments(): JSX.Element | null {
   return (
     <section className="reviews">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
-      <a className="button button--red-border button--big reviews__sumbit-button" href="#">
+      <a
+        onClick={() => setModalIsVisible(true)}
+        className="button button--red-border button--big reviews__sumbit-button"
+        href="#"
+      >
         Оставить отзыв
       </a>
 

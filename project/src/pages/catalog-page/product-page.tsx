@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { NameSpace } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -8,10 +8,12 @@ import { ratingStarSizeBigger } from '../../const';
 import RatingStars from '../../components/rating-stars/rating-stars';
 import Comments from '../../components/comments/comments';
 import Tabs from '../../components/tabs/tabs';
+import AddCommentModal from '../../components/add-comment-modal/add-comment-modal';
 
 function ProductPage(): JSX.Element | null {
   const pathParams = useParams();
   const dispatch = useAppDispatch();
+  const [ modalIsVisible, setModalIsVisible ] = useState(false);
 
   const { guitar } = useAppSelector((state) => state[NameSpace.guitars].currentGuitarData);
 
@@ -81,9 +83,12 @@ function ProductPage(): JSX.Element | null {
           </div>
         </div>
 
-        <Comments />
+        <Comments setModalIsVisible={setModalIsVisible}/>
 
       </div>
+      {
+        modalIsVisible ? <AddCommentModal setModalIsVisible={setModalIsVisible} productName={ name } /> : null
+      }
     </main>
   );
 }
