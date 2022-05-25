@@ -15,3 +15,5 @@ export const getFormattedPrice = (initialPrice: number) => (
     }));
 
 export const getReviewDate = (date: string) => new Date(date).toLocaleString('ru', {day: 'numeric', month: 'long'});
+
+export const isEscKey = (event: KeyboardEvent) => event.key === 'Escape' || event.key === 'Esc' || event.code === '27';

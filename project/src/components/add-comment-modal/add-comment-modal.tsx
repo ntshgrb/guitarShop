@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import FocusLock from 'react-focus-lock';
 import { RemoveScroll } from 'react-remove-scroll';
+import { isEscKey } from '../../utils/utils';
 
 type AddCommentModalProps = {
   setModalIsVisible: Dispatch<SetStateAction<boolean>>,
@@ -9,7 +10,7 @@ type AddCommentModalProps = {
 
 function AddCommentModal({ setModalIsVisible, productName }: AddCommentModalProps): JSX.Element {
   const documentKeyDownHandler = (event: KeyboardEvent) => {
-    if (event.key === 'Escape' || event.key === 'Esc' || event.code === '27') {
+    if (isEscKey(event)) {
       setModalIsVisible(false);
     }
   };
