@@ -9,11 +9,13 @@ import RatingStars from '../../components/rating-stars/rating-stars';
 import Comments from '../../components/comments/comments';
 import Tabs from '../../components/tabs/tabs';
 import AddCommentModal from '../../components/add-comment-modal/add-comment-modal';
+import CommentSentModal from '../../components/comment-sent-modal/comment-sent-modal';
 
 function ProductPage(): JSX.Element | null {
   const pathParams = useParams();
   const dispatch = useAppDispatch();
-  const [ modalIsVisible, setModalIsVisible ] = useState(false);
+  const [ commentModalIsVisible, setCommentModalVisible ] = useState(false);
+  const [ modalSuccessIsVisible, setModalSuccessVisible ] = useState(false);
 
   const { guitar } = useAppSelector((state) => state[NameSpace.guitars].currentGuitarData);
 
@@ -29,7 +31,7 @@ function ProductPage(): JSX.Element | null {
     return null;
   }
 
-  const { previewImg, name, rating, vendorCode, type: guitarType, stringCount, price, description } = guitar;
+  const { previewImg, name, rating, vendorCode, type: guitarType, stringCount, price, description, id } = guitar;
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
 
@@ -83,11 +85,21 @@ function ProductPage(): JSX.Element | null {
           </div>
         </div>
 
-        <Comments setModalIsVisible={setModalIsVisible}/>
+        <Comments setModalIsVisible={setCommentModalVisible}/>
 
       </div>
       {
-        modalIsVisible ? <AddCommentModal setModalIsVisible={setModalIsVisible} productName={ name } /> : null
+        commentModalIsVisible ?
+          <AddCommentModal
+            setModalIsVisible={setCommentModalVisible}
+            setModalSuccessVisible={setModalSuccessVisible}
+            productName={ name }
+            productId={ id }
+          /> :
+          null
+      }
+      {
+        modalSuccessIsVisible ? <CommentSentModal setModalSuccessVisible={setModalSuccessVisible} /> : null
       }
     </main>
   );

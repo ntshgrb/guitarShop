@@ -39,7 +39,10 @@ export const guitars = createSlice({
       state.currentGuitarData.comments = action.payload.userComments;
 
     },
+    updateComments: (state, action) => {
+      state.currentGuitarData.comments?.push(action.payload);
+    },
   },
 });
 
-export const { loadGuitarsList, setCurrentCatalogPage, loadGuitarData } = guitars.actions;
+export const { loadGuitarsList, setCurrentCatalogPage, loadGuitarData, updateComments } = guitars.actions;

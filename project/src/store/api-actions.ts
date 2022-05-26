@@ -2,9 +2,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { Guitar } from '../types/guitar';
 import { UserComment } from '../types/comment';
+import { CommentPost } from '../types/comment-post';
 import { APIRoute } from '../const';
 import { AxiosInstance } from 'axios';
-import { loadGuitarData, loadGuitarsList } from './reducers/guitars';
+import { loadGuitarData, loadGuitarsList, updateComments } from './reducers/guitars';
 
 export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -37,6 +38,24 @@ export const fetchGuitarDataAction = createAsyncThunk<void, string, {
       ]);
       dispatch(loadGuitarData({guitarData, userComments}));
     } catch (error){
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  },
+);
+
+export const postUserComment = createAsyncThunk<void, CommentPost, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'comments/postUserComment',
+  async ({ commentData, onSuccess }, {dispatch, extra: api}) => {
+    try {
+      const { data } = await api.post(`https://guitar-shop.accelerator.pages.academy${APIRoute.Comments}`, commentData);
+      dispatch(updateComments(data));
+      onSuccess();
+    } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
