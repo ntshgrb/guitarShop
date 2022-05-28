@@ -38,11 +38,16 @@ export const fetchGuitarDataAction = createAsyncThunk<void, string, {
   async (guitarId, {dispatch, extra: api}) => {
     try {
       const { data: guitarData } = await toast.promise((api.get<Guitar>(`${APIRoute.Guitars}/${guitarId}`)), toastLoading);
-      const { data: userComments }  = await api.get<UserComment>(`${APIRoute.Guitars}/${guitarId}${APIRoute.Comments}`);
       dispatch(loadGuitarData(guitarData));
-      dispatch(loadGuitarComments(userComments));
-    } catch (error){
+    } catch (error) {
       errorHandle(error);
+    }
+    try {
+      const { data: userComments }  = await api.get<UserComment>(`${APIRoute.Guitars}/${guitarId}${APIRoute.Comments}`);
+      dispatch(loadGuitarComments(userComments));
+    } catch(error) {
+      toast.info('Не удалось загрузить отзывы');
+      dispatch(loadGuitarComments([]));
     }
   },
 );
