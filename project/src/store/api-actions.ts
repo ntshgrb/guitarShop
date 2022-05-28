@@ -3,12 +3,13 @@ import { AppDispatch, State } from '../types/state';
 import { Guitar } from '../types/guitar';
 import { UserComment } from '../types/comment';
 import { CommentPost } from '../types/comment-post';
-import { APIRoute } from '../const';
+import { APIRoute, AppRoute } from '../const';
 import { AxiosInstance } from 'axios';
 import { loadGuitarsList, setLoading } from './reducers/guitars';
 import { loadGuitarData, loadGuitarComments, updateComments } from './reducers/current-guitar';
 import { errorHandle } from '../utils/error-handle';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const toastLoading = {pending: 'Loading...'};
 
@@ -41,6 +42,8 @@ export const fetchGuitarDataAction = createAsyncThunk<void, string, {
       dispatch(loadGuitarData(guitarData));
     } catch (error) {
       errorHandle(error);
+      const navigate = useNavigate();
+      navigate(AppRoute.NotFound);
     }
     try {
       const { data: userComments }  = await api.get<UserComment>(`${APIRoute.Guitars}/${guitarId}${APIRoute.Comments}`);

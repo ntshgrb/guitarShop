@@ -34,7 +34,8 @@ export enum AppRoute {
   CatalogPageNumber = '/catalog/page_',
   DefaultCatalogPage = '/catalog/page_1',
   ProductPage = '/guitar/',
-  ProductPageId = '/guitar/:id'
+  ProductPageId = '/guitar/:id',
+  NotFound = 'notfound',
 }
 
 export const guitarTypes = {
