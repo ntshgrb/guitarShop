@@ -17,7 +17,7 @@ function ProductPage(): JSX.Element | null {
   const [ commentModalIsVisible, setCommentModalVisible ] = useState(false);
   const [ modalSuccessIsVisible, setModalSuccessVisible ] = useState(false);
 
-  const { guitar } = useAppSelector((state) => state[NameSpace.guitars].currentGuitarData);
+  const guitar = useAppSelector((state) => state[NameSpace.currentGuitar].guitar);
 
   const guitarId = pathParams.id;
 

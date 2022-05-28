@@ -5,7 +5,12 @@ import { UserComment } from '../types/comment';
 import { CommentPost } from '../types/comment-post';
 import { APIRoute } from '../const';
 import { AxiosInstance } from 'axios';
-import { loadGuitarData, loadGuitarsList, updateComments } from './reducers/guitars';
+import { loadGuitarsList, setLoading } from './reducers/guitars';
+import { loadGuitarData, loadGuitarComments, updateComments } from './reducers/current-guitar';
+import { errorHandle } from '../utils/error-handle';
+import { toast } from 'react-toastify';
+
+const toastLoading = {pending: 'Loading...'};
 
 export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -15,11 +20,11 @@ export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
   'data/loadGuitars',
   async (_arg, {dispatch, extra: api}) => {
     try {
-      const { data } = await api.get<Guitar[]>(APIRoute.Guitars);
+      const { data } = await api.get<Guitar[]>(APIRoute.GuitarsLimited);
       dispatch(loadGuitarsList(data));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
+      dispatch(setLoading(false));
+      errorHandle(error);
     }
   },
 );
@@ -32,14 +37,12 @@ export const fetchGuitarDataAction = createAsyncThunk<void, string, {
   'data/loadGuitarData',
   async (guitarId, {dispatch, extra: api}) => {
     try {
-      const [ {data: guitarData}, {data: userComments} ]  = await Promise.all([
-        api.get<Guitar>(`https://guitar-shop.accelerator.pages.academy/guitars/${guitarId}`),
-        api.get<UserComment>(`https://guitar-shop.accelerator.pages.academy/guitars/${guitarId}/comments`),
-      ]);
-      dispatch(loadGuitarData({guitarData, userComments}));
+      const { data: guitarData } = await toast.promise((api.get<Guitar>(`${APIRoute.Guitars}/${guitarId}`)), toastLoading);
+      const { data: userComments }  = await api.get<UserComment>(`${APIRoute.Guitars}/${guitarId}${APIRoute.Comments}`);
+      dispatch(loadGuitarData(guitarData));
+      dispatch(loadGuitarComments(userComments));
     } catch (error){
-      // eslint-disable-next-line no-console
-      console.log(error);
+      errorHandle(error);
     }
   },
 );
@@ -52,12 +55,11 @@ export const postUserComment = createAsyncThunk<void, CommentPost, {
   'comments/postUserComment',
   async ({ commentData, onSuccess }, {dispatch, extra: api}) => {
     try {
-      const { data } = await api.post(`https://guitar-shop.accelerator.pages.academy${APIRoute.Comments}`, commentData);
+      const { data } = await api.post(APIRoute.Comments, commentData);
       dispatch(updateComments(data));
       onSuccess();
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
+      errorHandle(error);
     }
   },
 );

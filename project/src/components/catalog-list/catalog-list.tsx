@@ -8,6 +8,12 @@ function CatalogList(): JSX.Element {
   const currentPage = useAppSelector((state) => state[NameSpace.guitars].currentCatalogPage);
   const currentGuitarsList = useAppSelector(getGuitarsByPage(currentPage));
 
+  if (currentGuitarsList.length === 0) {
+    return (
+      <p>Ничего не найдено</p>
+    );
+  }
+
   return (
     <>
       <div className="cards catalog__cards">

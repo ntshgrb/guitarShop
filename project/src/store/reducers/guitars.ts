@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Guitar, GuitarData } from '../../types/guitar';
+import { Guitar } from '../../types/guitar';
 import { NameSpace } from '../../const';
 
 type InitialState = {
@@ -7,7 +7,6 @@ type InitialState = {
   guitarsCount: number;
   loading: boolean;
   currentCatalogPage: number;
-  currentGuitarData: GuitarData;
 }
 
 
@@ -16,10 +15,6 @@ const initialState: InitialState = {
   guitarsCount: 0,
   loading: true,
   currentCatalogPage: 1,
-  currentGuitarData: {
-    guitar: null,
-    comments: [],
-  },
 };
 
 export const guitars = createSlice({
@@ -34,15 +29,10 @@ export const guitars = createSlice({
     setCurrentCatalogPage: (state, action) => {
       state.currentCatalogPage = action.payload;
     },
-    loadGuitarData: (state, action) => {
-      state.currentGuitarData.guitar = action.payload.guitarData;
-      state.currentGuitarData.comments = action.payload.userComments;
-
-    },
-    updateComments: (state, action) => {
-      state.currentGuitarData.comments?.push(action.payload);
+    setLoading: (state, action) => {
+      state.loading = action.payload;
     },
   },
 });
 
-export const { loadGuitarsList, setCurrentCatalogPage, loadGuitarData, updateComments } = guitars.actions;
+export const { loadGuitarsList, setCurrentCatalogPage, setLoading } = guitars.actions;

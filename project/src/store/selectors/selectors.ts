@@ -19,7 +19,7 @@ export const getGuitarsByPage = (page: number) => createSelector(
 
 export const getComments = (commentsCount: number, removeButton: () => void) => createSelector(
   [
-    (state: State) => state[NameSpace.guitars].currentGuitarData.comments,
+    (state: State) => state[NameSpace.currentGuitar].comments,
   ],
   (comments: UserComment[] | null) => {
     if (comments){

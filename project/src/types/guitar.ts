@@ -1,5 +1,3 @@
-import { UserComment } from './comment';
-
 export type Guitar = {
   id: number,
   name: string,
@@ -12,7 +10,3 @@ export type Guitar = {
   price: number,
 }
 
-export type GuitarData = {
-  guitar: Guitar | null,
-  comments: UserComment[] | null,
-}
