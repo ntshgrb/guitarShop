@@ -2,7 +2,7 @@ import Layout from '../layout/layout';
 import Catalog from '../../pages/catalog-page/catalog-page';
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import ProductPage from '../../pages/catalog-page/product-page';
+import ProductPage from '../../pages/product-page/product-page';
 import NotFoundPage from '../../pages/not-found/not-found-page';
 
 function App(): JSX.Element {
