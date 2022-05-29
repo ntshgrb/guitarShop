@@ -20,6 +20,7 @@ export const ratingStarSizeBig = {
 export enum NameSpace {
   guitars = 'GUITARS',
   currentGuitar = 'CURRENT_GUITAR',
+  utils = 'UTILS',
 }
 
 export enum APIRoute {

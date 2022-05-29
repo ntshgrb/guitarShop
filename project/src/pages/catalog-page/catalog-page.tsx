@@ -3,9 +3,10 @@ import CatalogList from '../../components/catalog-list/catalog-list';
 import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import { NameSpace } from '../../const';
 
 function CatalogPage(): JSX.Element {
-  const isDataLoading = useAppSelector((state) => state.GUITARS.loading);
+  const isDataLoading = useAppSelector((state) => state[NameSpace.guitars].loading);
 
   return (
     <main className="page-content">

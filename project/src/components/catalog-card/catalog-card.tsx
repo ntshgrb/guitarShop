@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, ratingStarSize } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { toggleAddToCartModal } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
 import RatingStars from '../rating-stars/rating-stars';
@@ -8,11 +10,17 @@ type CatalogCardProps = {
   guitarItem: Guitar
 }
 
-function CatalogCard({guitarItem}: CatalogCardProps): JSX.Element {
+function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
   const { previewImg, rating, name, price, id } = guitarItem;
+  const dispatch = useAppDispatch();
 
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
+
+  const onAddToCartClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    dispatch(toggleAddToCartModal(true));
+  };
 
   return (
     <div className="product-card">
@@ -50,7 +58,7 @@ function CatalogCard({guitarItem}: CatalogCardProps): JSX.Element {
         >
           Подробнее
         </Link>
-        <a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+        <a onClick={onAddToCartClick} className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
       </div>
     </div>
   );
