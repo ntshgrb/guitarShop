@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
+import { UserComment } from '../../types/comment';
 import { Guitar } from '../../types/guitar';
 
 type InitialState = {
   guitar: Guitar | null,
-  comments: [],
+  comments: UserComment[],
 };
 
 const initialState: InitialState = {
