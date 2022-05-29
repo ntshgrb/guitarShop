@@ -10,6 +10,7 @@ import Comments from '../../components/comments/comments';
 import Tabs from '../../components/tabs/tabs';
 import AddCommentModal from '../../components/add-comment-modal/add-comment-modal';
 import CommentSentModal from '../../components/comment-sent-modal/comment-sent-modal';
+import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 
 function ProductPage(): JSX.Element | null {
   const pathParams = useParams();
@@ -39,14 +40,9 @@ function ProductPage(): JSX.Element | null {
     <main className="page-content">
       <div className="container">
         <h1 className="page-content__title title title--bigger">{name}</h1>
-        <ul className="breadcrumbs page-content__breadcrumbs">
-          <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
-          </li>
-          <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
-          </li>
-          <li className="breadcrumbs__item"><a className="link">{name}</a>
-          </li>
-        </ul>
+
+        <Breadcrumbs name={name}/>
+
         <div className="product-container">
 
           <img

@@ -1,7 +1,25 @@
+import { memo } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { AppRoute } from '../../const';
+
 function Header(): JSX.Element {
+  let logoStyle: React.CSSProperties | undefined = { 'pointerEvents': 'none' };
+  const location = useLocation();
+
+  if(!location.pathname.includes('/catalog')){
+    logoStyle = undefined;
+  }
+
   return (
     <header className="header" id="header">
-      <div className="container header__wrapper"><a className="header__logo logo"><img className="logo__img" width="70" height="70" src="../img/svg/logo.svg" alt="Логотип" /></a>
+      <div className="container header__wrapper">
+        <NavLink
+          to={AppRoute.Root}
+          className="header__logo logo"
+          style={logoStyle}
+        >
+          <img className="logo__img" width="70" height="70" src="../img/svg/logo.svg" alt="Логотип" />
+        </NavLink>
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li><a className="link main-nav__link link--current" href="#">Каталог</a>
@@ -46,4 +64,4 @@ function Header(): JSX.Element {
   );
 }
 
-export default Header;
+export default memo(Header);
