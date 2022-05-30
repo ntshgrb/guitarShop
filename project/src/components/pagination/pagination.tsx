@@ -12,8 +12,14 @@ function Pagination(): JSX.Element {
   const currentCatalogPage = useAppSelector((state) => state.GUITARS.currentCatalogPage);
   const totalPages = Math.ceil(guitarsCount / MAX_GUITARS_COUNT);
 
-  if (param.pageNumber && +param.pageNumber !== currentCatalogPage) {
-    dispatch(setCurrentCatalogPage(+param.pageNumber));
+  let pageNumber: number | null = null;
+
+  if (param.pageNumber) {
+    pageNumber = + param.pageNumber.replace('page_', '');
+  }
+
+  if (pageNumber && pageNumber !== currentCatalogPage) {
+    dispatch(setCurrentCatalogPage(pageNumber));
   }
 
   const onPageClick = (page: number) => {
