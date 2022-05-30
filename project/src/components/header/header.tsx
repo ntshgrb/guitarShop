@@ -6,7 +6,7 @@ function Header(): JSX.Element {
   let logoStyle: React.CSSProperties | undefined = { 'pointerEvents': 'none' };
   const location = useLocation();
 
-  if(!location.pathname.includes('/catalog')){
+  if(!(/catalog$/.test(location.pathname))){
     logoStyle = undefined;
   }
 
