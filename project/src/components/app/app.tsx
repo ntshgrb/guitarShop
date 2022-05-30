@@ -10,8 +10,9 @@ function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route index element={<Navigate to={AppRoute.DefaultCatalogPage} />} />
-          <Route path={AppRoute.CatalogPage} element={<Catalog />} />
+          <Route index element={<Navigate to={AppRoute.CatalogMain} />} />
+          <Route path={AppRoute.CatalogMain} element={<Catalog />} />
+          <Route path={AppRoute.Catalog} element={<Catalog />} />
           <Route path={AppRoute.ProductPageId} element={<ProductPage />} />
           <Route path='*' element={<NotFoundPage />} />
         </Route>

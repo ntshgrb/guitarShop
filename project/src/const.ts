@@ -31,9 +31,9 @@ export enum APIRoute {
 
 export enum AppRoute {
   Root = '/',
-  CatalogPage = 'catalog/page_:pageNumber',
   CatalogPageNumber = '/catalog/page_',
-  DefaultCatalogPage = '/catalog/page_1',
+  CatalogMain = '/catalog',
+  Catalog = '/catalog/:pageNumber',
   ProductPage = '/guitar/',
   ProductPageId = '/guitar/:id',
   NotFound = 'notfound',

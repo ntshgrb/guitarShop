@@ -14,7 +14,7 @@ function Breadcrumbs({ name }: BreadcrumbsProps): JSX.Element {
         <Link className="link" to={AppRoute.Root}>Главная</Link>
       </li>
       <li className="breadcrumbs__item">
-        <NavLink className="link" to={AppRoute.DefaultCatalogPage}>Каталог</NavLink>
+        <NavLink className="link" to={AppRoute.CatalogMain}>Каталог</NavLink>
       </li>
       {
         location.pathname.includes('/guitar/') ? (
