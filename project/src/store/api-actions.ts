@@ -5,7 +5,7 @@ import { UserComment } from '../types/comment';
 import { CommentPost } from '../types/comment-post';
 import { APIRoute, AppRoute } from '../const';
 import { AxiosInstance } from 'axios';
-import { loadGuitarsList, setLoading } from './reducers/guitars';
+import { loadGuitarsList, setLoading, loadComments } from './reducers/guitars';
 import { loadGuitarData, loadGuitarComments, updateComments } from './reducers/current-guitar';
 import { errorHandle } from '../utils/error-handle';
 import { toast } from 'react-toastify';
@@ -51,6 +51,22 @@ export const fetchGuitarDataAction = createAsyncThunk<void, string, {
     } catch(error) {
       toast.info('Не удалось загрузить отзывы');
       dispatch(loadGuitarComments([]));
+    }
+  },
+);
+
+export const fetchGuitarComments = createAsyncThunk<void, number, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/loadGuitarComments',
+  async (guitarId, {dispatch, extra: api}) => {
+    try {
+      const { data: userComments }  = await api.get<UserComment>(`${APIRoute.Guitars}/${guitarId}${APIRoute.Comments}`);
+      dispatch(loadComments({ guitarId, userComments }));
+    } catch(error) {
+      dispatch(loadComments([]));
     }
   },
 );

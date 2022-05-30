@@ -19,6 +19,7 @@ function ProductPage(): JSX.Element | null {
   const [ modalSuccessIsVisible, setModalSuccessVisible ] = useState(false);
 
   const guitar = useAppSelector((state) => state[NameSpace.currentGuitar].guitar);
+  const commentsCount = useAppSelector((state) => state[NameSpace.currentGuitar].commentsCount);
 
   const guitarId = pathParams.id;
 
@@ -63,6 +64,7 @@ function ProductPage(): JSX.Element | null {
                 ratingCount={rating}
               />
               <p className="visually-hidden">Оценка: Хорошо</p>
+              <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{commentsCount}</p>
             </div>
 
             <Tabs

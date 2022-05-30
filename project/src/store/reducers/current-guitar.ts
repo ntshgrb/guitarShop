@@ -6,11 +6,13 @@ import { Guitar } from '../../types/guitar';
 type InitialState = {
   guitar: Guitar | null,
   comments: UserComment[],
+  commentsCount: number | null,
 };
 
 const initialState: InitialState = {
   guitar: null,
   comments: [],
+  commentsCount: null,
 };
 
 export const currentGuitar = createSlice({
@@ -22,6 +24,7 @@ export const currentGuitar = createSlice({
     },
     loadGuitarComments: (state, action) => {
       state.comments = action.payload;
+      state.commentsCount = action.payload.length;
     },
     updateComments: (state, action) => {
       state.comments = action.payload;

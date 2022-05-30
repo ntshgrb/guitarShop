@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Guitar } from '../../types/guitar';
 import { NameSpace } from '../../const';
+import { UserComment } from '../../types/comment';
 
 type InitialState = {
   guitarsList: Guitar[],
   guitarsCount: number;
+  guitarsComments: {[id: string]: UserComment[]} [],
   loading: boolean;
   currentCatalogPage: number;
 }
@@ -13,6 +15,7 @@ type InitialState = {
 const initialState: InitialState = {
   guitarsList: [],
   guitarsCount: 0,
+  guitarsComments: [],
   loading: true,
   currentCatalogPage: 1,
 };
@@ -26,6 +29,9 @@ export const guitars = createSlice({
       state.guitarsCount = action.payload.length;
       state.loading = false;
     },
+    loadComments: (state, action) => {
+      state.guitarsComments = { ...state.guitarsComments, [action.payload.guitarId]: action.payload.userComments };
+    },
     setCurrentCatalogPage: (state, action) => {
       state.currentCatalogPage = action.payload;
     },
@@ -35,4 +41,4 @@ export const guitars = createSlice({
   },
 });
 
-export const { loadGuitarsList, setCurrentCatalogPage, setLoading } = guitars.actions;
+export const { loadGuitarsList, setCurrentCatalogPage, setLoading, loadComments } = guitars.actions;

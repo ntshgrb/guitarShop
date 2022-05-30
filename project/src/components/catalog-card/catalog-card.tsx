@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { AppRoute, ratingStarSize } from '../../const';
-import { useAppDispatch } from '../../hooks';
+import { AppRoute, NameSpace, ratingStarSize } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
@@ -13,6 +13,8 @@ type CatalogCardProps = {
 function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
   const { previewImg, rating, name, price, id } = guitarItem;
   const dispatch = useAppDispatch();
+
+  const guitarsReviews = useAppSelector((state) => state[NameSpace.guitars].guitarsComments[id]);
 
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
@@ -42,7 +44,7 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
           <p className="visually-hidden">Рейтинг: Хорошо</p>
           <p className="rate__count">
             <span className="visually-hidden">Всего оценок:</span>
-            9
+            {guitarsReviews.length}
           </p>
         </div>
         <p className="product-card__title">{name}</p>
