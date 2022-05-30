@@ -1,19 +1,27 @@
 import { memo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { setCurrentCatalogPage } from '../../store/reducers/guitars';
 
 function Header(): JSX.Element {
   let logoStyle: React.CSSProperties | undefined = { 'pointerEvents': 'none' };
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   if(!(/catalog$/.test(location.pathname))){
     logoStyle = undefined;
   }
 
+  const onLogoClick = () => {
+    dispatch(setCurrentCatalogPage(1));
+  };
+
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
         <NavLink
+          onClick={onLogoClick}
           to={AppRoute.Root}
           className="header__logo logo"
           style={logoStyle}
