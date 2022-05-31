@@ -27,7 +27,7 @@ export const currentGuitar = createSlice({
       state.commentsCount = action.payload.length;
     },
     updateComments: (state, action) => {
-      state.comments = action.payload;
+      state.comments = [...state.comments, action.payload];
     },
   },
 });
