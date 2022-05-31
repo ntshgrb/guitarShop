@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute, NameSpace, ratingStarSize } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchGuitarComments } from '../../store/api-actions';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
@@ -14,8 +16,11 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
   const { previewImg, rating, name, price, id } = guitarItem;
   const dispatch = useAppDispatch();
 
-  const guitarsReviews = useAppSelector((state) => state[NameSpace.guitars].guitarsComments[id]);
+  useEffect(() => {
+    dispatch(fetchGuitarComments(id));
+  }, [id, dispatch]);
 
+  const guitarsReviews = useAppSelector((state) => state[NameSpace.guitars].guitarsComments[id]);
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
 
@@ -44,7 +49,7 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
           <p className="visually-hidden">Рейтинг: Хорошо</p>
           <p className="rate__count">
             <span className="visually-hidden">Всего оценок:</span>
-            {guitarsReviews.length}
+            {guitarsReviews ? guitarsReviews.length : null}
           </p>
         </div>
         <p className="product-card__title">{name}</p>
