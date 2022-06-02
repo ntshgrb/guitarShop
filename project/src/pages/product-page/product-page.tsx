@@ -11,6 +11,8 @@ import Tabs from '../../components/tabs/tabs';
 import AddCommentModal from '../../components/add-comment-modal/add-comment-modal';
 import CommentSentModal from '../../components/comment-sent-modal/comment-sent-modal';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import { toggleAddToCartModal } from '../../store/reducers/utils';
+import AddCartModal from '../../components/add-cart-modal/add-cart-modal';
 
 function ProductPage(): JSX.Element | null {
   const pathParams = useParams();
@@ -20,6 +22,7 @@ function ProductPage(): JSX.Element | null {
 
   const guitar = useAppSelector((state) => state[NameSpace.currentGuitar].guitar);
   const commentsCount = useAppSelector((state) => state[NameSpace.currentGuitar].commentsCount);
+  const addToCartIsOpen = useAppSelector((state) => state[NameSpace.utils].addToCartModal);
 
   const guitarId = pathParams.id;
 
@@ -36,6 +39,10 @@ function ProductPage(): JSX.Element | null {
   const { previewImg, name, rating, vendorCode, type: guitarType, stringCount, price, description, id } = guitar;
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
+
+  const onAddToCartClick = () => {
+    dispatch(toggleAddToCartModal(true));
+  };
 
   return (
     <main className="page-content">
@@ -79,7 +86,12 @@ function ProductPage(): JSX.Element | null {
           <div className="product-container__price-wrapper">
             <p className="product-container__price-info product-container__price-info--title">Цена:</p>
             <p className="product-container__price-info product-container__price-info--value">{guitarPrice}</p>
-            <a className="button button--red button--big product-container__button" href="#">Добавить в корзину</a>
+            <a
+              onClick={onAddToCartClick}
+              className="button button--red button--big product-container__button"
+              href="#"
+            >Добавить в корзину
+            </a>
           </div>
         </div>
 
@@ -99,6 +111,12 @@ function ProductPage(): JSX.Element | null {
       {
         modalSuccessIsVisible ? <CommentSentModal setModalSuccessVisible={setModalSuccessVisible} /> : null
       }
+
+      {
+        addToCartIsOpen ? <AddCartModal guitar={guitar} /> : null
+      }
+
+
     </main>
   );
 }
