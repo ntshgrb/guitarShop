@@ -66,7 +66,7 @@ export const fetchGuitarComments = createAsyncThunk<void, number, {
       const { data: userComments }  = await api.get<UserComment>(`${APIRoute.Guitars}/${guitarId}${APIRoute.Comments}`);
       dispatch(loadComments({ guitarId, userComments }));
     } catch(error) {
-      dispatch(loadComments([]));
+      dispatch(loadComments({}));
     }
   },
 );

@@ -1,17 +1,15 @@
 import FocusLock from 'react-focus-lock';
 import { RemoveScroll } from 'react-remove-scroll';
 import { guitarTypes } from '../../const';
+import { Guitar } from '../../types/guitar';
 import { getFormattedPrice } from '../../utils/utils';
 
 type AddCartModalProps = {
-    name: string,
-    vendorCode: string,
-    type: string,
-    stringCount: number,
-    price: number,
+    guitar: Guitar;
 }
 
-function AddCartModal({ name, vendorCode, type, stringCount, price}: AddCartModalProps): JSX.Element {
+function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
+  const { name, vendorCode, type, stringCount, price } = guitar;
   const guitarPrice = getFormattedPrice(price);
 
   return (

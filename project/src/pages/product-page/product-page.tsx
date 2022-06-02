@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { NameSpace } from '../../const';
+import { NameSpace, Rating } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchGuitarDataAction } from '../../store/api-actions';
 import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
@@ -63,7 +63,7 @@ function ProductPage(): JSX.Element | null {
                 starSize={ratingStarSizeBigger}
                 ratingCount={rating}
               />
-              <p className="visually-hidden">Оценка: Хорошо</p>
+              <p className="visually-hidden">{`Рейтинг: ${Rating.get(Math.ceil(rating))}`}</p>
               <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{commentsCount}</p>
             </div>
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute, NameSpace, ratingStarSize } from '../../const';
+import { AppRoute, NameSpace, ratingStarSize, Rating } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchGuitarComments } from '../../store/api-actions';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
@@ -45,8 +45,7 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
             ratingCount={rating}
             starSize={ratingStarSize}
           />
-
-          <p className="visually-hidden">Рейтинг: Хорошо</p>
+          <p className="visually-hidden">{`Рейтинг: ${Rating.get(Math.ceil(rating))}`}</p>
           <p className="rate__count">
             <span className="visually-hidden">Всего оценок:</span>
             {guitarsReviews ? guitarsReviews.length : null}

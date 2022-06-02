@@ -6,7 +6,7 @@ import { UserComment } from '../../types/comment';
 type InitialState = {
   guitarsList: Guitar[],
   guitarsCount: number;
-  guitarsComments: {[id: string]: UserComment[]} [],
+  guitarsComments: {[id: string]: UserComment[]},
   loading: boolean;
   currentCatalogPage: number;
 }
@@ -15,7 +15,7 @@ type InitialState = {
 const initialState: InitialState = {
   guitarsList: [],
   guitarsCount: 0,
-  guitarsComments: [],
+  guitarsComments: {},
   loading: true,
   currentCatalogPage: 1,
 };
