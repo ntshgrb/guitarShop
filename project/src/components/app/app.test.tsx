@@ -22,6 +22,9 @@ const store = mockStore({
     loading: false,
     currentCatalogPage: 1,
   },
+  [NameSpace.utils]: {
+    addToCartModal: false,
+  },
 });
 const history = createMemoryHistory();
 
@@ -77,6 +80,9 @@ describe('Application Routing', () => {
         guitar: fakeGuitarData,
         comments: fakeComments,
         commentsCount: fakeComments.length,
+      },
+      [NameSpace.utils]: {
+        addToCartModal: false,
       },
     });
 
