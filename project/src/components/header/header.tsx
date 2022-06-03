@@ -3,15 +3,11 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
+import './header.css';
 
 function Header(): JSX.Element {
-  let logoStyle: React.CSSProperties | undefined = { 'pointerEvents': 'none' };
   const location = useLocation();
   const dispatch = useAppDispatch();
-
-  if(!(/catalog$/.test(location.pathname))){
-    logoStyle = undefined;
-  }
 
   const onLogoClick = () => {
     dispatch(setCurrentCatalogPage(1));
@@ -23,8 +19,7 @@ function Header(): JSX.Element {
         <NavLink
           onClick={onLogoClick}
           to={AppRoute.Root}
-          className="header__logo logo"
-          style={logoStyle}
+          className={`header__logo logo ${/catalog$/.test(location.pathname) ? 'header__logo--disabled' : ''}`}
         >
           <img className="logo__img" width="70" height="70" src="../img/svg/logo.svg" alt="Логотип" />
         </NavLink>

@@ -4,6 +4,7 @@ import { getReviewDate } from '../../utils/utils';
 import { getComments } from '../../store/selectors/selectors';
 import { Dispatch, memo, SetStateAction, useState } from 'react';
 import { useAppSelector } from '../../hooks';
+import './comments.css';
 
 type CommentsProps = {
   setModalIsVisible: Dispatch<SetStateAction<boolean>>,
@@ -73,9 +74,8 @@ function Comments({ setModalIsVisible }: CommentsProps): JSX.Element | null {
       }
 
       <button
-        style={reviewsButtonIsHidden ? { pointerEvents: 'none', opacity: '0'} : undefined}
         onClick={onMoreReviewsClick}
-        className="button button--medium reviews__more-button"
+        className={`button button--medium reviews__more-button ${reviewsButtonIsHidden ? 'reviews__more-button--disabled' : ''}`}
       >
           Показать еще отзывы
       </button>

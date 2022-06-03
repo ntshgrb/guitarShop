@@ -6,6 +6,7 @@ import { Rating } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { postUserComment } from '../../store/api-actions';
 import { CommentPost } from '../../types/comment-post';
+import './add-comment-modal.css';
 
 type AddCommentModalProps = {
   setModalIsVisible: Dispatch<SetStateAction<boolean>>,
@@ -72,7 +73,7 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
   return (
     <RemoveScroll>
       <FocusLock>
-        <div style={{position: 'relative', width: '550px', height: '610px', marginBottom: '50px'}}>
+        <div className="add-comment-modal">
           <div className="modal is-active modal--review">
             <div className="modal__wrapper">
               <div className="modal__overlay" data-close-modal></div>

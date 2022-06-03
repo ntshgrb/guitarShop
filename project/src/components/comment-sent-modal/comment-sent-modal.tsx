@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import { RemoveScroll } from 'react-remove-scroll';
 import FocusLock from 'react-focus-lock';
 import { isEscKey } from '../../utils/utils';
+import './comment-sent-modal.css';
 
 type CommentSentModalProps = {
   setModalSuccessVisible: Dispatch<SetStateAction<boolean>>,
@@ -25,7 +26,7 @@ function CommentSentModal({ setModalSuccessVisible }: CommentSentModalProps): JS
   return (
     <RemoveScroll>
       <FocusLock>
-        <div style={{position: 'relative', width: '550px', height: '410px', marginBottom: '50px'}}>
+        <div className="comment-sent-modal">
           <div className="modal is-active modal--success modal-for-ui-kit">
             <div className="modal__wrapper">
               <div className="modal__overlay" data-close-modal></div>

@@ -6,6 +6,7 @@ import { useAppDispatch } from '../../hooks';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getFormattedPrice, getPreviewImage, isEscKey } from '../../utils/utils';
+import './add-cart-modal.css';
 
 type AddCartModalProps = {
     guitar: Guitar;
@@ -35,7 +36,7 @@ function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
   return (
     <RemoveScroll>
       <FocusLock>
-        <div style={{position: 'relative', width: '550px', height: '410px', marginBottom: '50px'}}>
+        <div className="add-cart-modal">
           <div className="modal is-active modal--success modal-for-ui-kit">
             <div className="modal__wrapper">
               <div className="modal__overlay" data-close-modal></div>
