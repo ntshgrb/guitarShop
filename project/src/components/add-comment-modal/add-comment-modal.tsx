@@ -23,6 +23,36 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
   const [ rating, setRating ] = useState<number | null>(null);
 
+  const [ isNameValid, setNameValid ] = useState(true);
+  const [ isAdvantagesValid, setAdvantagesValid ] = useState(true);
+  const [ isDisadvantagesValid, setDisadvantagesValid ] = useState(true);
+  const [ isCommentValid, setCommentValid ] = useState(true);
+  const [ isRatingValid, setRatingValid ] = useState(true);
+
+  useEffect(() => {
+    document.addEventListener('keydown', documentKeyDownHandler);
+    document.querySelector('.modal__overlay')?.addEventListener('click', () => setModalIsVisible(false));
+    return () => {
+      document.removeEventListener('keydown', documentKeyDownHandler);
+    };
+  });
+
+  const validateTextInputs = (ref: React.MutableRefObject<HTMLInputElement | HTMLTextAreaElement | null>, setState: Dispatch<SetStateAction<boolean>>) => {
+    if(!ref.current || ref.current.value.length === 0) {
+      setState(false);
+    } else {
+      setState(true);
+    }
+  };
+
+  const validateRating = () => {
+    if (!rating) {
+      setRatingValid(false);
+    } else {
+      setRatingValid(true);
+    }
+  };
+
   const ratingData = [];
   for (const rate of Rating) {
     ratingData.unshift(rate);
@@ -33,14 +63,6 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
       setModalIsVisible(false);
     }
   };
-
-  useEffect(() => {
-    document.addEventListener('keydown', documentKeyDownHandler);
-    document.querySelector('.modal__overlay')?.addEventListener('click', () => setModalIsVisible(false));
-    return () => {
-      document.removeEventListener('keydown', documentKeyDownHandler);
-    };
-  });
 
   const onSubmit = (data: CommentPost) => {
     dispatch(postUserComment(data));
@@ -53,9 +75,19 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
 
   const handleFormSubmit = (event: FormEvent) => {
     event.preventDefault();
+    validateTextInputs(nameRef, setNameValid);
+    validateTextInputs(advantagesRef, setAdvantagesValid);
+    validateTextInputs(disadvantagesRef, setDisadvantagesValid);
+    validateTextInputs(commentRef, setCommentValid);
+    validateRating();
 
-
-    if (nameRef.current !== null &&  advantagesRef.current !== null && disadvantagesRef.current !== null && commentRef.current !== null && rating !== null) {
+    if (
+      nameRef.current !== null && nameRef.current.value.length !== 0 &&
+      advantagesRef.current !== null && advantagesRef.current.value.length !== 0 &&
+      disadvantagesRef.current !== null && disadvantagesRef.current.value.length !== 0 &&
+      commentRef.current !== null && commentRef.current.value.length !== 0 &&
+      rating !== null
+    ) {
       onSubmit({
         commentData: {
           guitarId: productId,
@@ -85,8 +117,16 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
 
                     <div className="form-review__name-wrapper">
                       <label className="form-review__label form-review__label--required" htmlFor="user-name">Ваше Имя</label>
-                      <input ref={nameRef} className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off" required />
-                      <p className="form-review__warning">Заполните поле</p>
+                      <input
+                        onChange={() => validateTextInputs(nameRef, setNameValid)}
+                        ref={nameRef}
+                        className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off"
+                      />
+                      <p
+                        className={ isNameValid ? 'form-review__warning form-review__warning--disabled' : 'form-review__warning'}
+                      >
+                        Заполните поле
+                      </p>
                     </div>
 
                     <div>
@@ -95,28 +135,57 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
                         {
                           ratingData.map( (ratingItem) => (
                             <Fragment key={ratingItem[0]}>
-                              <input onChange={(evt) => setRating(+evt.target.value)} className="visually-hidden" id={`star-${ratingItem[0]}`} name="rate" type="radio" value={ratingItem[0]} required/>
+                              <input onChange={(evt) => {
+                                setRating(+evt.target.value);
+                                setRatingValid(true);
+                              }}
+                              className="visually-hidden"
+                              id={`star-${ratingItem[0]}`}
+                              name="rate"
+                              type="radio"
+                              value={ratingItem[0]}
+                              />
                               <label className="rate__label" htmlFor={`star-${ratingItem[0]}`} title={ratingItem[1]}></label>
                             </Fragment>
                           ),
                           )
                         }
-                        <p className="rate__message">Поставьте оценку</p>
+                        <p className={ isRatingValid ? 'rate__message form-review__warning--disabled' : 'rate__message'}>Поставьте оценку</p>
                       </div>
                     </div>
                   </div>
 
                   <label className="form-review__label form-review__label--required" htmlFor="advant">Достоинства</label>
-                  <input ref={advantagesRef} className="form-review__input" id="advant" type="text" autoComplete="off" required />
-                  <p className="form-review__warning">Заполните поле</p>
+                  <input
+                    onChange={() => validateTextInputs(advantagesRef, setAdvantagesValid)}
+                    ref={advantagesRef}
+                    className="form-review__input"
+                    id="advant" type="text"
+                    autoComplete="off"
+                  />
+                  <p className={ isAdvantagesValid ? 'form-review__warning form-review__warning--disabled' : 'form-review__warning'}>Заполните поле</p>
 
                   <label className="form-review__label form-review__label--required" htmlFor="disadv">Недостатки</label>
-                  <input ref={disadvantagesRef} className="form-review__input" id="disadv" type="text" autoComplete="off" required/>
-                  <p className="form-review__warning">Заполните поле</p>
+                  <input
+                    onChange={() => validateTextInputs(disadvantagesRef, setDisadvantagesValid)}
+                    ref={disadvantagesRef}
+                    className="form-review__input"
+                    id="disadv"
+                    type="text"
+                    autoComplete="off"
+                  />
+                  <p className={ isDisadvantagesValid ? 'form-review__warning form-review__warning--disabled' : 'form-review__warning'}>Заполните поле</p>
 
                   <label className="form-review__label form-review__label--required" htmlFor="comment">Комментарий</label>
-                  <textarea ref={commentRef} className="form-review__input form-review__input--textarea" id="comment" rows={10} autoComplete="off" required></textarea>
-                  <p className="form-review__warning">Заполните поле</p>
+                  <textarea
+                    onChange={() => validateTextInputs(commentRef, setCommentValid)}
+                    ref={commentRef} className="form-review__input form-review__input--textarea"
+                    id="comment"
+                    rows={10}
+                    autoComplete="off"
+                  >
+                  </textarea>
+                  <p className={isCommentValid ? 'form-review__warning form-review__warning--disabled' : 'form-review__warning'}>Заполните поле</p>
 
                   <button className="button button--medium-20 form-review__button" type="submit">Отправить отзыв</button>
                 </form>

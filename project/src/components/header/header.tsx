@@ -9,7 +9,7 @@ function Header(): JSX.Element {
   const location = useLocation();
   const dispatch = useAppDispatch();
 
-  const onLogoClick = () => {
+  const onLinkClick = () => {
     dispatch(setCurrentCatalogPage(1));
   };
 
@@ -17,7 +17,7 @@ function Header(): JSX.Element {
     <header className="header" id="header">
       <div className="container header__wrapper">
         <NavLink
-          onClick={onLogoClick}
+          onClick={onLinkClick}
           to={AppRoute.Root}
           className={`header__logo logo ${/catalog$/.test(location.pathname) ? 'header__logo--disabled' : ''}`}
         >
@@ -25,7 +25,13 @@ function Header(): JSX.Element {
         </NavLink>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><a className="link main-nav__link link--current" href="#">Каталог</a>
+            <li>
+              <NavLink
+                to={AppRoute.CatalogMain}
+                onClick={onLinkClick}
+                className={({isActive}) => isActive? 'link main-nav__link link--current' : 'link main-nav__link'}
+              >Каталог
+              </NavLink>
             </li>
             <li><a className="link main-nav__link" href="#">Где купить?</a>
             </li>

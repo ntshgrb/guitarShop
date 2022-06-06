@@ -4,3 +4,8 @@
   height: 610px;
   margin-bottom: 50px;
 }
+
+.form-review__warning--disabled {
+  pointer-events: none;
+  opacity: 0;
+}
