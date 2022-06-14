@@ -22,12 +22,31 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
   const disadvantagesRef = useRef<HTMLInputElement | null>(null);
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
   const [ rating, setRating ] = useState<number | null>(null);
+  const [ dynamicRating, setDynamicRating ] = useState<number | null>(null);
 
   const [ isNameValid, setNameValid ] = useState(true);
   const [ isAdvantagesValid, setAdvantagesValid ] = useState(true);
   const [ isDisadvantagesValid, setDisadvantagesValid ] = useState(true);
   const [ isCommentValid, setCommentValid ] = useState(true);
   const [ isRatingValid, setRatingValid ] = useState(true);
+
+  const onRatingHover = (event: React.MouseEvent<HTMLLabelElement, MouseEvent>) => {
+    if (event.currentTarget.dataset.id){
+      setDynamicRating(+event.currentTarget.dataset.id);
+    }
+  };
+
+  const onRatingLeave = () => setDynamicRating(null);
+
+  const getRatingLabelClass = (currentRating: number) => {
+    if (dynamicRating !== null) {
+      return dynamicRating >= currentRating ? 'rate__label rate__label--full' : 'rate__label';
+    } else if (rating) {
+      return rating >= currentRating ? 'rate__label rate__label--full' : 'rate__label';
+    } else {
+      return 'rate__label';
+    }
+  };
 
   useEffect(() => {
     document.addEventListener('keydown', documentKeyDownHandler);
@@ -55,7 +74,7 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
 
   const ratingData = [];
   for (const rate of Rating) {
-    ratingData.unshift(rate);
+    ratingData.push(rate);
   }
 
   const documentKeyDownHandler = (event: KeyboardEvent) => {
@@ -135,17 +154,25 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
                         {
                           ratingData.map( (ratingItem) => (
                             <Fragment key={ratingItem[0]}>
-                              <input onChange={(evt) => {
-                                setRating(+evt.target.value);
-                                setRatingValid(true);
-                              }}
-                              className="visually-hidden"
-                              id={`star-${ratingItem[0]}`}
-                              name="rate"
-                              type="radio"
-                              value={ratingItem[0]}
+                              <input
+                                onChange={(evt) => {
+                                  setRating(+evt.target.value);
+                                  setRatingValid(true);
+                                }}
+                                className="visually-hidden"
+                                id={`star-${ratingItem[0]}`}
+                                name="rate"
+                                type="radio"
+                                value={ratingItem[0]}
                               />
-                              <label className="rate__label" htmlFor={`star-${ratingItem[0]}`} title={ratingItem[1]}></label>
+                              <label
+                                className={ getRatingLabelClass(ratingItem[0]) }
+                                data-id={ratingItem[0]}
+                                htmlFor={`star-${ratingItem[0]}`} title={ratingItem[1]}
+                                onMouseEnter={(evt) => onRatingHover(evt)}
+                                onMouseLeave={onRatingLeave}
+                              >
+                              </label>
                             </Fragment>
                           ),
                           )
