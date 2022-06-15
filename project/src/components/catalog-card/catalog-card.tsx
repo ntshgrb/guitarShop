@@ -1,8 +1,9 @@
-import { useEffect } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute, NameSpace, ratingStarSize, Rating } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchGuitarComments } from '../../store/api-actions';
+import { GuitarToCartContext } from '../../store/guitar-to-cart-context';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
@@ -20,6 +21,13 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
     dispatch(fetchGuitarComments(id));
   }, [id, dispatch]);
 
+  let setGuitarToCart: Dispatch<SetStateAction<Guitar | null>>;
+  const guitarToCart = useContext(GuitarToCartContext);
+
+  if (guitarToCart) {
+    setGuitarToCart= guitarToCart.setGuitarToCart;
+  }
+
   const guitarsReviews = useAppSelector((state) => state[NameSpace.guitars].guitarsComments[id]);
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
@@ -27,6 +35,7 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
   const onAddToCartClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     dispatch(toggleAddToCartModal(true));
+    setGuitarToCart(guitarItem);
   };
 
   return (
@@ -64,7 +73,13 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
         >
           Подробнее
         </Link>
-        <a onClick={onAddToCartClick} className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+        <a
+          onClick={onAddToCartClick}
+          className="button button--red button--mini button--add-to-cart"
+          href="#"
+        >
+            Купить
+        </a>
       </div>
     </div>
   );

@@ -13,10 +13,10 @@ type AddCartModalProps = {
 }
 
 function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
-  const { name, vendorCode, type, stringCount, price, previewImg } = guitar;
   const dispatch = useAppDispatch();
-  const guitarPrice = getFormattedPrice(price);
 
+  const { name, vendorCode, type, stringCount, price, previewImg } = guitar as Guitar;
+  const guitarPrice = getFormattedPrice(price);
   const guitarImage = getPreviewImage(previewImg);
 
   const documentKeyDownHandler = (event: KeyboardEvent) => {

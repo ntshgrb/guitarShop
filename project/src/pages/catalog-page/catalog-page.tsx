@@ -4,9 +4,18 @@ import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { NameSpace } from '../../const';
+import { useState, useMemo } from 'react';
+import { Guitar } from '../../types/guitar';
+import { GuitarToCartContext } from '../../store/guitar-to-cart-context';
+import AddCartModal from '../../components/add-cart-modal/add-cart-modal';
+import { toast } from 'react-toastify';
 
 function CatalogPage(): JSX.Element {
   const isDataLoading = useAppSelector((state) => state[NameSpace.guitars].loading);
+  const addToCartIsOpen = useAppSelector((state) => state[NameSpace.utils].addToCartModal);
+
+  const [ guitarToCart, setGuitarToCart ] = useState<Guitar | null>(null);
+  const GuitarToCartContextValue = useMemo(() => ({guitarToCart, setGuitarToCart}), [guitarToCart]);
 
   return (
     <main className="page-content">
@@ -25,8 +34,18 @@ function CatalogPage(): JSX.Element {
             isDataLoading? (
               <p>Loading...</p>
             ) : (
-              <CatalogList />
+              <GuitarToCartContext.Provider value={GuitarToCartContextValue}>
+                <CatalogList />
+              </GuitarToCartContext.Provider>
             )
+          }
+
+          {
+            addToCartIsOpen && guitarToCart ? <AddCartModal guitar={guitarToCart} /> : null
+          }
+
+          {
+            addToCartIsOpen && !guitarToCart ? toast.info('Произошла ошибка, невозможно добавить товар в корзину') : null
           }
 
         </div>
