@@ -4,9 +4,12 @@ import { UserComment } from '../../types/comment';
 import { State } from '../../types/state';
 import { MAX_GUITARS_COUNT, NameSpace } from '../../const';
 
+const selectGuitarsList = (state: State) => state[NameSpace.guitars].guitarsList;
+const selectUserComments = (state: State) => state[NameSpace.currentGuitar].comments;
+
 export const getGuitarsByPage = (page: number) => createSelector(
   [
-    (state: State) => state[NameSpace.guitars].guitarsList,
+    selectGuitarsList,
     () => page,
   ],
   (guitars: Guitar[]) => {
@@ -19,7 +22,7 @@ export const getGuitarsByPage = (page: number) => createSelector(
 
 export const getComments = (commentsCount: number, removeButton: () => void) => createSelector(
   [
-    (state: State) => state[NameSpace.currentGuitar].comments,
+    selectUserComments,
   ],
   (comments: UserComment[] | null) => {
     if (comments){

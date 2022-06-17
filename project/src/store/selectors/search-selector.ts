@@ -3,9 +3,11 @@ import { NameSpace } from '../../const';
 import { Guitar } from '../../types/guitar';
 import { State } from '../../types/state';
 
+const selectGuitars = (state: State) => state[NameSpace.guitars].guitarsList;
+
 export const selectSearchData = (searchRequest: string | null) => createSelector(
   [
-    (state: State) => state[NameSpace.guitars].guitarsList,
+    selectGuitars,
   ],
   (guitars: Guitar[]) => {
     if (!searchRequest) {
