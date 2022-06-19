@@ -56,3 +56,10 @@ export enum HTTP_CODE {
   BAD_REQUEST = 400,
   NOT_FOUND = 404,
 }
+
+export enum Sorting {
+  'desc' = 'DESC',
+  'asc' = 'ASC',
+  'price' = 'PRICE',
+  'popularity' = 'POPULARITY',
+}

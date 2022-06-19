@@ -2,12 +2,14 @@ import { createSelector } from 'reselect';
 import { Guitar } from '../../types/guitar';
 import { UserComment } from '../../types/comment';
 import { State } from '../../types/state';
-import { MAX_GUITARS_COUNT, NameSpace } from '../../const';
+import { MAX_GUITARS_COUNT, NameSpace, Sorting } from '../../const';
+import { SortingSettingsType } from '../../types/catalog-settings-types';
+import { sortByPopularity, sortByPrice } from '../../utils/catalog-sorting';
 
 const selectGuitarsList = (state: State) => state[NameSpace.guitars].guitarsList;
 const selectUserComments = (state: State) => state[NameSpace.currentGuitar].comments;
 
-export const getGuitarsByPage = (page: number) => createSelector(
+export const getGuitarsByPage = (page: number, props: SortingSettingsType) => createSelector(
   [
     selectGuitarsList,
     () => page,
@@ -15,8 +17,21 @@ export const getGuitarsByPage = (page: number) => createSelector(
   (guitars: Guitar[]) => {
     const lastGuitarIndex = page * MAX_GUITARS_COUNT;
     const firstGuitarIndex = lastGuitarIndex - MAX_GUITARS_COUNT;
+    let guitarsList = guitars;
 
-    return guitars.slice(firstGuitarIndex, lastGuitarIndex);
+    switch (props.sortingType) {
+      case Sorting.price:
+        guitarsList = sortByPrice(guitarsList, props.sortingOrder);
+        break;
+      case Sorting.popularity:
+        guitarsList = sortByPopularity(guitarsList, props.sortingOrder);
+        break;
+      default:
+        guitarsList = guitars;
+        break;
+    }
+
+    return guitarsList.slice(firstGuitarIndex, lastGuitarIndex);
   },
 );
 

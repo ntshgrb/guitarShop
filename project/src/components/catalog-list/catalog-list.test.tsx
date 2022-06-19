@@ -3,7 +3,7 @@ import CatalogList from './catalog-list';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { fakeGuitars, fakeGuitarsComments } from '../../utils/mocks';
-import { NameSpace } from '../../const';
+import { NameSpace, Sorting } from '../../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../../services/api';
 import thunk from 'redux-thunk';
@@ -27,7 +27,10 @@ describe('component: CatalogList', () => {
     render(
       <BrowserRouter >
         <Provider store={store}>
-          <CatalogList  />
+          <CatalogList
+            sortingType={Sorting.price}
+            sortingOrder={Sorting.asc}
+          />
         </Provider>
       </BrowserRouter>,
     );

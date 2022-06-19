@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import {configureMockStore} from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import CatalogSort from './catalog-sort';
+import { Sorting } from '../../const';
 
 
 const mockStore = configureMockStore();
@@ -12,7 +13,12 @@ describe('Component: CatalogSort', () => {
     render(
       <BrowserRouter >
         <Provider store={mockStore()}>
-          <CatalogSort />
+          <CatalogSort
+            setCatalogSort={jest.fn}
+            setSortingOrder={jest.fn}
+            catalogSort={Sorting.price}
+            sortingOrder={Sorting.asc}
+          />
         </Provider>
       </BrowserRouter>,
     );
