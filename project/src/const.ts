@@ -63,3 +63,8 @@ export enum Sorting {
   'price' = 'PRICE',
   'popularity' = 'POPULARITY',
 }
+
+export enum SortSearch {
+  'sort' = '_sort=',
+  'order' = '_order=',
+}

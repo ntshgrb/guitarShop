@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Sorting } from '../../const';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute, Sorting } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
 import { SortingOrderType, SortingType } from '../../types/catalog-settings-types';
@@ -13,25 +14,31 @@ type CatalogSortType = {
 
 function CatalogSort({ setCatalogSort, setSortingOrder, catalogSort, sortingOrder }: CatalogSortType): JSX.Element {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleSettingsChange = () => {
+    dispatch(setCurrentCatalogPage(1));
+    navigate(AppRoute.CatalogMain);
+  };
 
   const onPriceClick = () => {
     setCatalogSort(Sorting.price);
-    dispatch(setCurrentCatalogPage(1));
+    handleSettingsChange();
   };
 
   const onPopularityClick = () => {
     setCatalogSort(Sorting.popularity);
-    dispatch(setCurrentCatalogPage(1));
+    handleSettingsChange();
   };
 
   const onAscSortingClick = () => {
     setSortingOrder(Sorting.asc);
-    dispatch(setCurrentCatalogPage(1));
+    handleSettingsChange();
   };
 
   const onDescSortingClick = () => {
     setSortingOrder(Sorting.desc);
-    dispatch(setCurrentCatalogPage(1));
+    handleSettingsChange();
   };
 
   return (
