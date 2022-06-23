@@ -10,6 +10,7 @@ import { loadGuitarData, loadGuitarComments, updateComments } from './reducers/c
 import { errorHandle } from '../utils/error-handle';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { setPriceRange } from './reducers/catalog-filter';
 
 const toastLoading = {pending: 'Loading...'};
 
@@ -23,6 +24,7 @@ export const fetchGuitarsAction = createAsyncThunk<void, undefined, {
     try {
       const { data } = await api.get<Guitar[]>(APIRoute.GuitarsLimited);
       dispatch(loadGuitarsList(data));
+      dispatch(setPriceRange(data));
     } catch (error) {
       dispatch(setLoading(false));
       errorHandle(error);
