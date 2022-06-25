@@ -69,3 +69,27 @@ export enum SortSearch {
   'sort' = '_sort=',
   'order' = '_order=',
 }
+
+export const availableTypes = [
+  {
+    name: 'Акустические гитары',
+    typeName: 'acoustic',
+    strings: [6, 7, 12],
+  },
+  {
+    name: 'Электрогитары',
+    typeName: 'electric',
+    strings: [4, 6, 7],
+  },
+  {
+    name: 'Укулеле',
+    typeName: 'ukulele',
+    strings: [4],
+  },
+];
+
+export const availableStringsCount = {
+  acoustic: [6, 7, 12],
+  electric: [4, 6, 7],
+  ukulele: [4],
+};

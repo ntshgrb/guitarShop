@@ -8,3 +8,5 @@ export type SortingSettingsType = {
   sortingType: SortingType,
   sortingOrder: SortingOrderType,
 }
+
+export type guitarsTypes = 'acoustic' | 'electric' | 'ukulele' | null;
