@@ -22,6 +22,10 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
     if (resetData) {
       setUserMinPrice('');
       setUserMaxPrice('');
+      dispatch(setUserPriceRange({
+        userMinPrice: null,
+        userMaxPrice: null,
+      }));
       setResetPrice(false);
     }
   }, [resetData, setResetPrice]);

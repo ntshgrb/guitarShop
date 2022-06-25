@@ -1,23 +1,16 @@
 import React, { memo, useEffect, useState } from 'react';
 import PriceRange from '../price-range/price-range';
 import { availableTypes, availableStringsCount } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { setGuitarType, setStringsCount } from '../../store/reducers/catalog-filter';
 
 function CatalogFilter(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const [resetPrice, setResetPrice] = useState(false);
+
   const [selectedTypes, setSelectedTypes ] =  useState<string[]>([]);
   const [activeStrings, setActiveStrings] = useState<number[]>([]);
   const [selectedStrings, setSelectedStrings] = useState<number[]>([]);
-
-  const [resetPrice, setResetPrice] = useState(false);
-
-  const onTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!selectedTypes.includes(event.target.name)) {
-      setSelectedTypes((prevValue) => [event.target.name, ...prevValue]);
-      return;
-    }
-
-    const typeIndex = selectedTypes.indexOf(event.target.name);
-    setSelectedTypes((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
-  };
 
   const stringsCount = Array.from(new Set(availableTypes
     .reduce( (previousValue, currentValue) => [...previousValue, ...currentValue.strings], [] as number[])));
@@ -31,7 +24,9 @@ function CatalogFilter(): JSX.Element {
     } else {
       setActiveStrings([]);
     }
-  }, [selectedTypes]);
+
+    dispatch(setGuitarType(selectedTypes));
+  }, [dispatch, selectedTypes]);
 
   useEffect(() => {
     if (activeStrings.length > 0) {
@@ -47,7 +42,21 @@ function CatalogFilter(): JSX.Element {
 
   }, [activeStrings]);
 
+  useEffect(() => {
+    dispatch(setStringsCount(selectedStrings));
+  }, [dispatch, selectedStrings]);
+
   const isDisabled = (count: number) => (selectedTypes.length > 0) ? !activeStrings.includes(count) : false;
+
+  const onTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedTypes.includes(event.target.name)) {
+      setSelectedTypes((prevValue) => [event.target.name, ...prevValue]);
+      return;
+    }
+
+    const typeIndex = selectedTypes.indexOf(event.target.name);
+    setSelectedTypes((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
+  };
 
   const onStringsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.dataset.strings && !selectedStrings.includes(+event.target.dataset.strings)) {
@@ -69,7 +78,9 @@ function CatalogFilter(): JSX.Element {
   return (
     <form className="catalog-filter">
       <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
+
       <PriceRange resetData={resetPrice} setResetPrice={setResetPrice}/>
+
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         {

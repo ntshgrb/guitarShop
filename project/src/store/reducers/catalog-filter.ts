@@ -12,8 +12,8 @@ type InitialState = {
     userMinPrice: number | null,
     userMaxPrice: number | null,
   },
-  guitarType: guitarsTypes,
-  stringsCount: null | number,
+  guitarType: guitarsTypes[] | null,
+  stringsCount: number[] | null,
 }
 
 const initialState: InitialState = {
