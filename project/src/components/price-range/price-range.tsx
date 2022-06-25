@@ -1,10 +1,15 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NameSpace } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setUserPriceRange } from '../../store/reducers/catalog-filter';
 import { isEnterKey } from '../../utils/utils';
 
-function PriceRange(): JSX.Element {
+type PriceRangeProps = {
+  resetData: boolean;
+  setResetPrice: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element {
   const { minPrice, maxPrice } = useAppSelector((state) => state[NameSpace.catalogFilter].priceRange);
   const dispatch = useAppDispatch();
   const minPriceRef = useRef<HTMLInputElement | null>(null);
@@ -12,6 +17,14 @@ function PriceRange(): JSX.Element {
 
   const [ userMinPrice, setUserMinPrice ] = useState('');
   const [ userMaxPrice, setUserMaxPrice ] = useState('');
+
+  useEffect(() => {
+    if (resetData) {
+      setUserMinPrice('');
+      setUserMaxPrice('');
+      setResetPrice(false);
+    }
+  }, [resetData, setResetPrice]);
 
   const onPriceChange = (event: React.ChangeEvent<HTMLInputElement> ) => {
     switch (event.target.name) {

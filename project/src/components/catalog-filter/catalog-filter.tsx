@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PriceRange from '../price-range/price-range';
 import { availableTypes, availableStringsCount } from '../../const';
 
@@ -6,6 +6,8 @@ function CatalogFilter(): JSX.Element {
   const [selectedTypes, setSelectedTypes ] =  useState<string[]>([]);
   const [activeStrings, setActiveStrings] = useState<number[]>([]);
   const [selectedStrings, setSelectedStrings] = useState<number[]>([]);
+
+  const [resetPrice, setResetPrice] = useState(false);
 
   const onTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedTypes.includes(event.target.name)) {
@@ -57,10 +59,17 @@ function CatalogFilter(): JSX.Element {
     setSelectedStrings((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
   };
 
+  const onResetButtonClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setSelectedTypes([]);
+    setSelectedStrings([]);
+    setResetPrice(true);
+  };
+
   return (
     <form className="catalog-filter">
       <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
-      <PriceRange />
+      <PriceRange resetData={resetPrice} setResetPrice={setResetPrice}/>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         {
@@ -98,7 +107,12 @@ function CatalogFilter(): JSX.Element {
 
       </fieldset>
 
-      <button className="catalog-filter__reset-btn button button--black-border button--medium" type="reset">Очистить</button>
+      <button
+        onClick={onResetButtonClick}
+        className="catalog-filter__reset-btn button button--black-border button--medium"
+        type="reset"
+      >Очистить
+      </button>
     </form>
   );
 }
