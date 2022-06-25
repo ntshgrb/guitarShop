@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { NameSpace } from '../../const';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setGuitarsCount } from '../../store/reducers/guitars';
 import { getGuitarsByPage } from '../../store/selectors/selectors';
 import { SortingOrderType, SortingType } from '../../types/catalog-settings-types';
 import CatalogCard from '../catalog-card/catalog-card';
@@ -11,9 +13,14 @@ type CataloListProps = {
 }
 
 function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const currentPage = useAppSelector((state) => state[NameSpace.guitars].currentCatalogPage);
 
-  const currentGuitarsList = useAppSelector(getGuitarsByPage(currentPage, {sortingType, sortingOrder}));
+  const {currentGuitarsList, guitarsCount} = useAppSelector(getGuitarsByPage(currentPage, {sortingType, sortingOrder}));
+
+  useEffect(() => {
+    dispatch(setGuitarsCount(guitarsCount));
+  }, [dispatch, guitarsCount]);
 
   if (currentGuitarsList.length === 0) {
     return (

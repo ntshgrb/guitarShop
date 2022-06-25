@@ -3,18 +3,21 @@ import { Guitar } from '../../types/guitar';
 import { UserComment } from '../../types/comment';
 import { State } from '../../types/state';
 import { MAX_GUITARS_COUNT, NameSpace, Sorting } from '../../const';
-import { SortingSettingsType } from '../../types/catalog-settings-types';
+import { guitarsTypes, SortingSettingsType } from '../../types/catalog-settings-types';
 import { sortByPopularity, sortByPrice } from '../../utils/catalog-sorting';
 
 const selectGuitarsList = (state: State) => state[NameSpace.guitars].guitarsList;
 const selectUserComments = (state: State) => state[NameSpace.currentGuitar].comments;
+const selectActiveTypes = (state: State) => state[NameSpace.catalogFilter].guitarType;
+const selectActiveStrings = (state: State) => state[NameSpace.catalogFilter].stringsCount;
 
 export const getGuitarsByPage = (page: number, props: SortingSettingsType) => createSelector(
   [
     selectGuitarsList,
-    () => page,
+    selectActiveTypes,
+    selectActiveStrings,
   ],
-  (guitars: Guitar[]) => {
+  (guitars: Guitar[], activeTypes, activeStrings) => {
     const lastGuitarIndex = page * MAX_GUITARS_COUNT;
     const firstGuitarIndex = lastGuitarIndex - MAX_GUITARS_COUNT;
     let guitarsList = guitars;
@@ -31,7 +34,18 @@ export const getGuitarsByPage = (page: number, props: SortingSettingsType) => cr
         break;
     }
 
-    return guitarsList.slice(firstGuitarIndex, lastGuitarIndex);
+    if (activeTypes && activeTypes.length !== 0) {
+      guitarsList = guitarsList.filter((item) =>  activeTypes.includes(item.type as guitarsTypes));
+    }
+
+    if (activeStrings && activeStrings.length !== 0) {
+      guitarsList = guitarsList.filter((item) => activeStrings.includes(item.stringCount));
+    }
+
+    return {
+      currentGuitarsList: guitarsList.slice(firstGuitarIndex, lastGuitarIndex),
+      guitarsCount: guitarsList.length,
+    };
   },
 );
 

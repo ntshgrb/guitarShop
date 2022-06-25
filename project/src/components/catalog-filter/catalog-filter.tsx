@@ -1,11 +1,14 @@
 import React, { memo, useEffect, useState } from 'react';
 import PriceRange from '../price-range/price-range';
-import { availableTypes, availableStringsCount } from '../../const';
+import { availableTypes, availableStringsCount, AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setGuitarType, setStringsCount } from '../../store/reducers/catalog-filter';
+import { setCurrentCatalogPage } from '../../store/reducers/guitars';
+import { useNavigate } from 'react-router-dom';
 
 function CatalogFilter(): JSX.Element {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [resetPrice, setResetPrice] = useState(false);
 
   const [selectedTypes, setSelectedTypes ] =  useState<string[]>([]);
@@ -56,6 +59,8 @@ function CatalogFilter(): JSX.Element {
 
     const typeIndex = selectedTypes.indexOf(event.target.name);
     setSelectedTypes((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
+    dispatch(setCurrentCatalogPage(1));
+    navigate(AppRoute.CatalogMain);
   };
 
   const onStringsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +71,8 @@ function CatalogFilter(): JSX.Element {
 
     const typeIndex = selectedStrings.indexOf(Number(event.target.dataset.strings));
     setSelectedStrings((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
+    dispatch(setCurrentCatalogPage(1));
+    navigate(AppRoute.CatalogMain);
   };
 
   const onResetButtonClick = (event: React.MouseEvent) => {
