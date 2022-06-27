@@ -21,6 +21,18 @@ function CatalogFilter(): JSX.Element {
   const stringsCountOrdered = stringsCount.sort((a, b) => a - b);
 
   useEffect(() => {
+    if(searchParams.has(FilterParams.Type)) {
+      const typeParam = searchParams.get(FilterParams.Type)?.split('_');
+      setSelectedTypes(typeParam as string[]);
+    }
+
+    if(searchParams.has(FilterParams.Strings)) {
+      const stringsParam = searchParams.get(FilterParams.Strings)?.split('_').map((param) => +param);
+      setSelectedStrings(stringsParam as number[]);
+    }
+  }, []);
+
+  useEffect(() => {
     if (selectedTypes.length > 0) {
       const activeStringsCount = Array.from(new Set(selectedTypes
         .reduce( (previousValue, guitarType) => [...previousValue, ...availableStringsCount[guitarType as 'acoustic' | 'electric' | 'ukulele']], [] as number[])));

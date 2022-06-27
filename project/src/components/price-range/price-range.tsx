@@ -23,19 +23,20 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
 
   const [ searchParams, setSearchParams ] = useSearchParams();
 
-  const updateSearchParams = (priceStart: number | null, priceEnd: number | null) => {
-    if(priceStart || priceEnd) {
-      searchParams.delete(FilterParams.PriceStart);
-      searchParams.set(FilterParams.PriceStart, String(priceStart));
+  useEffect(() => {
+    if(searchParams.has(FilterParams.PriceStart && FilterParams.PriceEnd)) {
+      const priceStart = (searchParams.get(FilterParams.PriceStart));
+      const priceEnd = (searchParams.get(FilterParams.PriceEnd));
 
-      searchParams.delete(FilterParams.PriceEnd);
-      searchParams.set(FilterParams.PriceEnd, String(priceEnd));
+      setUserMinPrice(priceStart as string);
+      setUserMaxPrice(priceEnd as string);
 
-      setSearchParams(searchParams);
-      dispatch(setCurrentCatalogPage(1));
-      navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
+      dispatch(setUserPriceRange({
+        userMinPrice: priceStart,
+        userMaxPrice: priceEnd,
+      }));
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (resetData) {
@@ -51,6 +52,20 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
       setResetPrice(false);
     }
   }, [resetData, setResetPrice]);
+
+  const updateSearchParams = (priceStart: number | null, priceEnd: number | null) => {
+    if(priceStart || priceEnd) {
+      searchParams.delete(FilterParams.PriceStart);
+      searchParams.set(FilterParams.PriceStart, String(priceStart));
+
+      searchParams.delete(FilterParams.PriceEnd);
+      searchParams.set(FilterParams.PriceEnd, String(priceEnd));
+
+      setSearchParams(searchParams);
+      dispatch(setCurrentCatalogPage(1));
+      navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
+    }
+  };
 
   const onPriceChange = (event: React.ChangeEvent<HTMLInputElement> ) => {
     switch (event.target.name) {
