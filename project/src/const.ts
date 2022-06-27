@@ -97,4 +97,6 @@ export const availableStringsCount = {
 export enum FilterParams {
   PriceStart = 'price_gte',
   PriceEnd = 'price_lte',
+  Type = 'type',
+  Strings = 'strings',
 }

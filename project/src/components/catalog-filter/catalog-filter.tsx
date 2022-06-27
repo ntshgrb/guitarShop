@@ -1,14 +1,15 @@
 import React, { memo, useEffect, useState } from 'react';
 import PriceRange from '../price-range/price-range';
-import { availableTypes, availableStringsCount, AppRoute } from '../../const';
+import { availableTypes, availableStringsCount, AppRoute, FilterParams } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setGuitarType, setStringsCount } from '../../store/reducers/catalog-filter';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function CatalogFilter(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [resetPrice, setResetPrice] = useState(false);
 
   const [selectedTypes, setSelectedTypes ] =  useState<string[]>([]);
@@ -24,11 +25,18 @@ function CatalogFilter(): JSX.Element {
       const activeStringsCount = Array.from(new Set(selectedTypes
         .reduce( (previousValue, guitarType) => [...previousValue, ...availableStringsCount[guitarType as 'acoustic' | 'electric' | 'ukulele']], [] as number[])));
       setActiveStrings(activeStringsCount);
+      searchParams.delete(FilterParams.Type);
+      const typeParam = selectedTypes.join('_');
+      searchParams.set(FilterParams.Type, typeParam);
     } else {
+      searchParams.delete(FilterParams.Type);
       setActiveStrings([]);
     }
 
     dispatch(setGuitarType(selectedTypes));
+    setSearchParams(searchParams);
+    dispatch(setCurrentCatalogPage(1));
+    navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
   }, [dispatch, selectedTypes]);
 
   useEffect(() => {
@@ -46,7 +54,17 @@ function CatalogFilter(): JSX.Element {
   }, [activeStrings]);
 
   useEffect(() => {
+    if (selectedStrings.length > 0) {
+      searchParams.delete(FilterParams.Strings);
+      const stringsParam = selectedStrings.join('_');
+      searchParams.set(FilterParams.Strings, stringsParam);
+    } else {
+      searchParams.delete(FilterParams.Strings);
+    }
     dispatch(setStringsCount(selectedStrings));
+    setSearchParams(searchParams);
+    dispatch(setCurrentCatalogPage(1));
+    navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
   }, [dispatch, selectedStrings]);
 
   const isDisabled = (count: number) => (selectedTypes.length > 0) ? !activeStrings.includes(count) : false;
@@ -58,9 +76,6 @@ function CatalogFilter(): JSX.Element {
       const typeIndex = selectedTypes.indexOf(event.target.name);
       setSelectedTypes((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     }
-
-    dispatch(setCurrentCatalogPage(1));
-    navigate(AppRoute.CatalogMain);
   };
 
   const onStringsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,9 +85,6 @@ function CatalogFilter(): JSX.Element {
       const typeIndex = selectedStrings.indexOf(Number(event.target.dataset.strings));
       setSelectedStrings((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     }
-
-    dispatch(setCurrentCatalogPage(1));
-    navigate(AppRoute.CatalogMain);
   };
 
   const onResetButtonClick = (event: React.MouseEvent) => {
