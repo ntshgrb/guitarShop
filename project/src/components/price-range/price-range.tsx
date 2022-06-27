@@ -36,15 +36,18 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         userMaxPrice: priceEnd,
       }));
     }
+    return () => {
+      dispatch(setUserPriceRange({
+        userMinPrice: null,
+        userMaxPrice: null,
+      }));
+    };
   }, []);
 
   useEffect(() => {
     if (resetData) {
       setUserMinPrice('');
       setUserMaxPrice('');
-      searchParams.delete(FilterParams.PriceEnd);
-      searchParams.delete(FilterParams.PriceStart);
-      setSearchParams(searchParams);
       dispatch(setUserPriceRange({
         userMinPrice: null,
         userMaxPrice: null,

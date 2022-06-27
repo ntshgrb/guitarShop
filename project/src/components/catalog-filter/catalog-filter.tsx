@@ -103,6 +103,8 @@ function CatalogFilter(): JSX.Element {
     event.preventDefault();
     setSelectedTypes([]);
     setSelectedStrings([]);
+    searchParams.delete(FilterParams.PriceEnd);
+    searchParams.delete(FilterParams.PriceStart);
     setResetPrice(true);
   };
 
