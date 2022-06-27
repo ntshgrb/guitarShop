@@ -100,3 +100,8 @@ export enum FilterParams {
   Type = 'type',
   Strings = 'strings',
 }
+
+export enum RangeOfPrice {
+  Start = 'от',
+  End = 'до',
+}

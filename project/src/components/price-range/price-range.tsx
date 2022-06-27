@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { AppRoute, FilterParams, NameSpace } from '../../const';
+import { AppRoute, FilterParams, NameSpace, RangeOfPrice } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setUserPriceRange } from '../../store/reducers/catalog-filter';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
@@ -54,7 +54,7 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
 
   const onPriceChange = (event: React.ChangeEvent<HTMLInputElement> ) => {
     switch (event.target.name) {
-      case ('от'):
+      case (RangeOfPrice.Start):
         if (+event.target.value > +userMaxPrice && userMaxPrice !== '') {
           minPriceRef.current?.setCustomValidity(`Не больше ${userMaxPrice.toLocaleString()} руб.`);
         } else if (maxPrice && +event.target.value > maxPrice) {
@@ -67,7 +67,7 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         minPriceRef.current?.reportValidity();
         setUserMinPrice(event.target.value);
         break;
-      case ('до'):
+      case (RangeOfPrice.End):
         if (maxPrice && +event.target.value > maxPrice) {
           maxPriceRef.current?.setCustomValidity(`Не больше ${maxPrice.toLocaleString()} руб.`);
         } else if (+event.target.value < +userMinPrice) {
