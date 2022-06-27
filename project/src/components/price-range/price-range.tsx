@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { NameSpace } from '../../const';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { AppRoute, FilterParams, NameSpace } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setUserPriceRange } from '../../store/reducers/catalog-filter';
+import { setCurrentCatalogPage } from '../../store/reducers/guitars';
 import { isEnterKey } from '../../utils/utils';
 
 type PriceRangeProps = {
@@ -12,16 +14,36 @@ type PriceRangeProps = {
 function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element {
   const { minPrice, maxPrice } = useAppSelector((state) => state[NameSpace.catalogFilter].priceRange);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const minPriceRef = useRef<HTMLInputElement | null>(null);
   const maxPriceRef = useRef<HTMLInputElement | null>(null);
 
   const [ userMinPrice, setUserMinPrice ] = useState('');
   const [ userMaxPrice, setUserMaxPrice ] = useState('');
 
+  const [ searchParams, setSearchParams ] = useSearchParams();
+
+  const updateSearchParams = (priceStart: number | null, priceEnd: number | null) => {
+    if(priceStart || priceEnd) {
+      searchParams.delete(FilterParams.PriceStart);
+      searchParams.set(FilterParams.PriceStart, String(priceStart));
+
+      searchParams.delete(FilterParams.PriceEnd);
+      searchParams.set(FilterParams.PriceEnd, String(priceEnd));
+
+      setSearchParams(searchParams);
+      dispatch(setCurrentCatalogPage(1));
+      navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
+    }
+  };
+
   useEffect(() => {
     if (resetData) {
       setUserMinPrice('');
       setUserMaxPrice('');
+      searchParams.delete(FilterParams.PriceEnd);
+      searchParams.delete(FilterParams.PriceStart);
+      setSearchParams(searchParams);
       dispatch(setUserPriceRange({
         userMinPrice: null,
         userMaxPrice: null,
@@ -68,6 +90,7 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         userMinPrice: userMaxPrice,
         userMaxPrice: userMaxPrice,
       }));
+      updateSearchParams(+userMaxPrice, +userMaxPrice);
       return;
     }
     if (minPrice && +userMinPrice < minPrice && userMinPrice !== '') {
@@ -76,6 +99,7 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         userMinPrice: minPrice,
         userMaxPrice: userMaxPrice ? +userMaxPrice : maxPrice,
       }));
+      updateSearchParams(minPrice, userMaxPrice ? +userMaxPrice : maxPrice);
       return;
     }
 
@@ -85,6 +109,16 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         userMinPrice: maxPrice,
         userMaxPrice: maxPrice,
       }));
+      updateSearchParams(maxPrice, maxPrice);
+      return;
+    }
+    if (userMinPrice === '') {
+      setUserMinPrice(String(minPrice));
+      dispatch(setUserPriceRange({
+        userMinPrice: minPrice,
+        userMaxPrice: userMaxPrice ? +userMaxPrice : maxPrice,
+      }));
+      updateSearchParams(minPrice, userMaxPrice ? +userMaxPrice : maxPrice);
       return;
     }
 
@@ -92,6 +126,7 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
       userMinPrice: userMinPrice ? +userMinPrice : minPrice,
       userMaxPrice: userMaxPrice ? +userMaxPrice : maxPrice,
     }));
+    updateSearchParams(userMinPrice ? +userMinPrice : minPrice, userMaxPrice ? +userMaxPrice : maxPrice);
   };
 
   const onMinPriceBlur = () => {
@@ -111,14 +146,17 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         userMinPrice: userMinPrice ? +userMinPrice : minPrice,
         userMaxPrice: userMinPrice ? +userMinPrice : maxPrice,
       }));
+      updateSearchParams(userMinPrice ? +userMinPrice : minPrice, userMinPrice ? +userMinPrice : maxPrice);
       return;
     }
-    if (+userMaxPrice < +userMinPrice) {
+    if (+userMaxPrice < +userMinPrice && userMaxPrice !== '') {
       setUserMaxPrice(userMinPrice);
       dispatch(setUserPriceRange({
         userMinPrice: userMinPrice,
         userMaxPrice: userMinPrice,
       }));
+      updateSearchParams(+userMinPrice, +userMinPrice);
+
       return;
     }
     if (maxPrice && +userMaxPrice > maxPrice) {
@@ -127,12 +165,24 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         userMinPrice: userMinPrice ? +userMinPrice : minPrice,
         userMaxPrice: maxPrice,
       }));
+      updateSearchParams(userMinPrice ? +userMinPrice : minPrice, maxPrice);
+      return;
+    }
+    if (userMaxPrice === '') {
+      setUserMaxPrice(String(maxPrice));
+      dispatch(setUserPriceRange({
+        userMinPrice: userMinPrice ? +userMinPrice : minPrice,
+        userMaxPrice: maxPrice,
+      }));
+      updateSearchParams(userMinPrice ? +userMinPrice : minPrice, maxPrice);
+      return;
     }
 
     dispatch(setUserPriceRange({
       userMinPrice: userMinPrice ? +userMinPrice : minPrice,
       userMaxPrice: userMaxPrice ? +userMaxPrice : maxPrice,
     }));
+    updateSearchParams(userMinPrice ? +userMinPrice : minPrice, userMaxPrice ? +userMaxPrice : maxPrice);
   };
 
   const onMaxPriceBlur = () => {

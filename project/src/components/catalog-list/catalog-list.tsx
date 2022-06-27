@@ -14,9 +14,10 @@ type CataloListProps = {
 
 function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const currentPage = useAppSelector((state) => state[NameSpace.guitars].currentCatalogPage);
+  const currentCatalogPage = useAppSelector((state) => state[NameSpace.guitars].currentCatalogPage);
 
-  const {currentGuitarsList, guitarsCount} = useAppSelector(getGuitarsByPage(currentPage, {sortingType, sortingOrder}));
+
+  const {currentGuitarsList, guitarsCount} = useAppSelector(getGuitarsByPage(currentCatalogPage, {sortingType, sortingOrder}));
 
   useEffect(() => {
     dispatch(setGuitarsCount(guitarsCount));
@@ -35,7 +36,7 @@ function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Eleme
           currentGuitarsList.map( (guitar) => <CatalogCard guitarItem={guitar} key={guitar.id}/>)
         }
       </div>
-      <Pagination />
+      <Pagination currentCatalogPage={currentCatalogPage} guitarsCount={guitarsCount}/>
     </>
   );
 }

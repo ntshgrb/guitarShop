@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppRoute, Sorting } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
@@ -15,10 +15,11 @@ type CatalogSortType = {
 function CatalogSort({ setCatalogSort, setSortingOrder, catalogSort, sortingOrder }: CatalogSortType): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [ searchParams ] = useSearchParams();
 
   const handleSettingsChange = () => {
     dispatch(setCurrentCatalogPage(1));
-    navigate(AppRoute.CatalogMain);
+    navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
   };
 
   const onPriceClick = () => {

@@ -1,15 +1,19 @@
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import { AppRoute, MAX_GUITARS_COUNT } from '../../const';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
+import { useEffect } from 'react';
 
+type PaginationProps = {
+  currentCatalogPage: number,
+  guitarsCount: number,
+}
 
-function Pagination(): JSX.Element {
+function Pagination({currentCatalogPage, guitarsCount}: PaginationProps): JSX.Element {
   const dispatch = useAppDispatch();
   const param = useParams();
+  const [searchParams] = useSearchParams();
 
-  const guitarsCount = useAppSelector((state) => state.GUITARS.guitarsCount);
-  const currentCatalogPage = useAppSelector((state) => state.GUITARS.currentCatalogPage);
   const totalPages = Math.ceil(guitarsCount / MAX_GUITARS_COUNT);
 
   let pageNumber: number | null = null;
@@ -18,9 +22,11 @@ function Pagination(): JSX.Element {
     pageNumber = + param.pageNumber.replace('page_', '');
   }
 
-  if (pageNumber && pageNumber !== currentCatalogPage) {
-    dispatch(setCurrentCatalogPage(pageNumber));
-  }
+  useEffect(() => {
+    if (pageNumber && pageNumber !== currentCatalogPage) {
+      dispatch(setCurrentCatalogPage(pageNumber));
+    }
+  }, []);
 
   const onPageClick = (page: number) => {
     dispatch(setCurrentCatalogPage(page));
@@ -42,6 +48,7 @@ function Pagination(): JSX.Element {
                 onClick={() => onPageClick(currentCatalogPage - 1)}
                 className="link pagination__page-link"
                 to={ `${AppRoute.CatalogPageNumber}${(currentCatalogPage - 1).toString()}`}
+                state={searchParams.toString()}
               >
                   Назад
               </Link>
@@ -55,6 +62,7 @@ function Pagination(): JSX.Element {
                 onClick={() => onPageClick(page + 1)}
                 className="link pagination__page-link"
                 to={`${AppRoute.CatalogPageNumber}${( page + 1 ).toString()}`}
+                state={searchParams.toString()}
               >
                 {page + 1}
               </Link>
@@ -69,6 +77,7 @@ function Pagination(): JSX.Element {
                 onClick={() => {onPageClick(currentCatalogPage + 1);}}
                 className="link pagination__page-link"
                 to={`${AppRoute.CatalogPageNumber}${(currentCatalogPage + 1).toString()}`}
+                state={searchParams.toString()}
               >
                   Далее
               </Link>

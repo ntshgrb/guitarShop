@@ -54,11 +54,11 @@ function CatalogFilter(): JSX.Element {
   const onTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedTypes.includes(event.target.name)) {
       setSelectedTypes((prevValue) => [event.target.name, ...prevValue]);
-      return;
+    } else {
+      const typeIndex = selectedTypes.indexOf(event.target.name);
+      setSelectedTypes((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     }
 
-    const typeIndex = selectedTypes.indexOf(event.target.name);
-    setSelectedTypes((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     dispatch(setCurrentCatalogPage(1));
     navigate(AppRoute.CatalogMain);
   };
@@ -66,11 +66,11 @@ function CatalogFilter(): JSX.Element {
   const onStringsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.dataset.strings && !selectedStrings.includes(+event.target.dataset.strings)) {
       setSelectedStrings((prevValue) => [Number(event.target.dataset.strings), ...prevValue]);
-      return;
+    } else {
+      const typeIndex = selectedStrings.indexOf(Number(event.target.dataset.strings));
+      setSelectedStrings((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     }
 
-    const typeIndex = selectedStrings.indexOf(Number(event.target.dataset.strings));
-    setSelectedStrings((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     dispatch(setCurrentCatalogPage(1));
     navigate(AppRoute.CatalogMain);
   };

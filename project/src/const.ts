@@ -66,8 +66,8 @@ export enum Sorting {
 }
 
 export enum SortSearch {
-  'sort' = '_sort=',
-  'order' = '_order=',
+  'sort' = '_sort',
+  'order' = '_order',
 }
 
 export const availableTypes = [
@@ -93,3 +93,8 @@ export const availableStringsCount = {
   electric: [4, 6, 7],
   ukulele: [4],
 };
+
+export enum FilterParams {
+  PriceStart = 'price_gte',
+  PriceEnd = 'price_lte',
+}

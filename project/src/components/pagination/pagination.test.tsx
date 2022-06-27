@@ -5,6 +5,7 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { fakeGuitarData, fakeGuitars, fakeGuitarsComments } from '../../utils/mocks';
 import { NameSpace } from '../../const';
 import Pagination from './pagination';
+import { datatype } from 'faker';
 
 describe('component: Pagination', () => {
   it('Should render 2 pages correctly', () => {
@@ -24,7 +25,7 @@ describe('component: Pagination', () => {
     render(
       <BrowserRouter >
         <Provider store={store}>
-          <Pagination />
+          <Pagination currentCatalogPage={datatype.number()} guitarsCount={datatype.number()} />
         </Provider>
       </BrowserRouter>,
     );
@@ -51,7 +52,7 @@ describe('component: Pagination', () => {
     render(
       <BrowserRouter >
         <Provider store={store}>
-          <Pagination />
+          <Pagination currentCatalogPage={datatype.number()} guitarsCount={datatype.number()}/>
         </Provider>
       </BrowserRouter>,
     );

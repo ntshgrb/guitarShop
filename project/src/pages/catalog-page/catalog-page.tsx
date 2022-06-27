@@ -3,14 +3,14 @@ import CatalogList from '../../components/catalog-list/catalog-list';
 import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSort from '../../components/catalog-sort/catalog-sort';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
-import { AppRoute, NameSpace, Sorting, SortSearch } from '../../const';
+import { NameSpace, Sorting, SortSearch } from '../../const';
 import { useState, useMemo, useEffect } from 'react';
 import { Guitar } from '../../types/guitar';
 import { GuitarToCartContext } from '../../store/guitar-to-cart-context';
 import AddCartModal from '../../components/add-cart-modal/add-cart-modal';
 import { toast } from 'react-toastify';
 import { SortingOrderType, SortingType } from '../../types/catalog-settings-types';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 function CatalogPage(): JSX.Element {
   const isDataLoading = useAppSelector((state) => state[NameSpace.guitars].loading);
@@ -22,32 +22,45 @@ function CatalogPage(): JSX.Element {
   const [ catalogSort, setCatalogSort ] = useState<SortingType>(null);
   const [ sortingOrder, setSortingOrder ] = useState<SortingOrderType>(null);
 
-  const navigate = useNavigate();
-  const params = useParams();
-
+  const [ searchParams, setSearchParams ] = useSearchParams();
   const location = useLocation();
+
   useEffect(() => {
-    if (location.search) {
-      const sortIndex = (location.search).indexOf(SortSearch.sort);
-      const orderIndex = (location.search).indexOf(SortSearch.order);
+    if (searchParams.has(SortSearch.sort) || searchParams.has(SortSearch.order)) {
+      const sortValue = (searchParams.get(SortSearch.sort) as SortingType)?.toUpperCase();
+      const orderValue = (searchParams.get(SortSearch.order) as SortingOrderType)?.toUpperCase();
 
-      const sortValue = (location.search.slice(sortIndex + (SortSearch.sort).length, orderIndex - 1))?.toUpperCase() as SortingType;
-      const orderValue = (location.search.slice(orderIndex + (SortSearch.order).length) as SortingOrderType)?.toUpperCase() as SortingOrderType;
-
-      setCatalogSort(sortValue);
-      setSortingOrder(orderValue);
+      setCatalogSort(sortValue ? sortValue as SortingType : null);
+      setSortingOrder(orderValue ? orderValue as SortingOrderType : null);
     }
   }, []);
 
+  useEffect(() => {
+    if (location.state) {
+      const param = new URLSearchParams(location.state as string);
+      if(catalogSort && sortingOrder) {
+        param.delete(SortSearch.sort);
+        param.set(SortSearch.sort, catalogSort?.toLowerCase());
 
-  useEffect( () => {
-    if (catalogSort !== null) {
-      navigate({
-        pathname: params.pageNumber ? `${AppRoute.CatalogMain}/${params.pageNumber}` : AppRoute.CatalogMain,
-        search: `${SortSearch.sort}${catalogSort.toLowerCase()}&${SortSearch.order}${sortingOrder?.toLowerCase()}`,
-      });
+        param.delete(SortSearch.order);
+        param.set(SortSearch.order, sortingOrder?.toLowerCase());
+        setSearchParams(param);
+        return;
+      }
+      setSearchParams(location.state as string);
+      return;
     }
-  }, [catalogSort, sortingOrder, navigate]);
+
+    if (!location.state && catalogSort && sortingOrder) {
+      searchParams.delete(SortSearch.sort);
+      searchParams.set(SortSearch.sort, catalogSort?.toLowerCase());
+
+      searchParams.delete(SortSearch.order);
+      searchParams.set(SortSearch.order, sortingOrder?.toLowerCase());
+      setSearchParams(searchParams);
+    }
+  }, [location.state, catalogSort, sortingOrder, searchParams, setSearchParams]);
+
 
   if (catalogSort && !sortingOrder) {
     setSortingOrder(Sorting.asc);

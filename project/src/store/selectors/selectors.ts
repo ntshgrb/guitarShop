@@ -10,14 +10,16 @@ const selectGuitarsList = (state: State) => state[NameSpace.guitars].guitarsList
 const selectUserComments = (state: State) => state[NameSpace.currentGuitar].comments;
 const selectActiveTypes = (state: State) => state[NameSpace.catalogFilter].guitarType;
 const selectActiveStrings = (state: State) => state[NameSpace.catalogFilter].stringsCount;
+const selectPriceRange = (state: State) => state[NameSpace.catalogFilter].userPriceRange;
 
 export const getGuitarsByPage = (page: number, props: SortingSettingsType) => createSelector(
   [
     selectGuitarsList,
     selectActiveTypes,
     selectActiveStrings,
+    selectPriceRange,
   ],
-  (guitars: Guitar[], activeTypes, activeStrings) => {
+  (guitars: Guitar[], activeTypes, activeStrings, priceRange) => {
     const lastGuitarIndex = page * MAX_GUITARS_COUNT;
     const firstGuitarIndex = lastGuitarIndex - MAX_GUITARS_COUNT;
     let guitarsList = guitars;
@@ -40,6 +42,12 @@ export const getGuitarsByPage = (page: number, props: SortingSettingsType) => cr
 
     if (activeStrings && activeStrings.length !== 0) {
       guitarsList = guitarsList.filter((item) => activeStrings.includes(item.stringCount));
+    }
+
+    if (priceRange && priceRange.userMaxPrice !== null && priceRange.userMinPrice !== null) {
+      guitarsList = guitarsList.filter(
+        (item) => priceRange.userMaxPrice !== null && priceRange.userMinPrice !== null &&
+        (item.price >= priceRange.userMinPrice) && (item.price <= priceRange.userMaxPrice));
     }
 
     return {
