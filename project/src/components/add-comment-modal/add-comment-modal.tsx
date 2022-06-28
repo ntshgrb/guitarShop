@@ -74,7 +74,10 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
 
   const ratingData = [];
   for (const rate of Rating) {
-    ratingData.push(rate);
+    ratingData.push({
+      ratingCount: rate[0],
+      ratingTitle: rate[1],
+    });
   }
 
   const documentKeyDownHandler = (event: KeyboardEvent) => {
@@ -153,22 +156,22 @@ function AddCommentModal({ setModalIsVisible, setModalSuccessVisible, productNam
                       <div className="rate rate--reverse">
                         {
                           ratingData.map( (ratingItem) => (
-                            <Fragment key={ratingItem[0]}>
+                            <Fragment key={ratingItem.ratingTitle}>
                               <input
                                 onChange={(evt) => {
                                   setRating(+evt.target.value);
                                   setRatingValid(true);
                                 }}
                                 className="visually-hidden"
-                                id={`star-${ratingItem[0]}`}
+                                id={`star-${ratingItem.ratingCount}`}
                                 name="rate"
                                 type="radio"
-                                value={ratingItem[0]}
+                                value={ratingItem.ratingCount}
                               />
                               <label
-                                className={ getRatingLabelClass(ratingItem[0]) }
-                                data-id={ratingItem[0]}
-                                htmlFor={`star-${ratingItem[0]}`} title={ratingItem[1]}
+                                className={ getRatingLabelClass(ratingItem.ratingCount) }
+                                data-id={ratingItem.ratingCount}
+                                htmlFor={`star-${ratingItem.ratingCount}`} title={ratingItem.ratingTitle}
                                 onMouseEnter={(evt) => onRatingHover(evt)}
                                 onMouseLeave={onRatingLeave}
                               >

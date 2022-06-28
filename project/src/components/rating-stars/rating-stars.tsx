@@ -11,22 +11,24 @@ type RatingStarsProps = {
 
 function RatingStars({ ratingCount, starSize }: RatingStarsProps): JSX.Element {
   const ratingStars = Array.from({length: MAX_GUITAR_RATING}, () => '#icon-star').fill('#icon-full-star', 0, Math.ceil(ratingCount));
-  const ratingStarsLabels = Array.from({length: MAX_GUITAR_RATING}, (_ars, index) => [`star-${index}`]);
 
-  ratingStars.forEach( (value, index) => ratingStarsLabels[index].push(value));
+  const guitarRating = ratingStars.map((value, index) => ({
+    ratingKey: `star-${index}`,
+    ratingIcon: value,
+  }));
 
   return (
     <>
       {
-        ratingStarsLabels.map( (ratingStar) =>  (
+        guitarRating.map( (ratingStar) =>  (
           <svg
-            key={ratingStar[0]}
+            key={ratingStar.ratingKey}
             width={starSize.width}
             height={starSize.heigth}
             aria-hidden="true"
             data-testid={'testId'}
           >
-            <use xlinkHref={ratingStar[1]}></use>
+            <use xlinkHref={ratingStar.ratingIcon}></use>
           </svg>),
         )
       }
