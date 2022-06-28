@@ -12,7 +12,7 @@ const fakeCommentsCount = 6;
 const fakeComments = new Array(fakeCommentsCount).fill(null).map(() => makeFakeComment());
 const fakeComment = makeFakeComment();
 
-describe('Reducer: offers', () => {
+describe('Reducer: currentGuitar', () => {
   it('without additional parameters should return initial state', () => {
     expect(currentGuitar.reducer(undefined, {type: 'UNKNOWN_ACTION'}))
       .toEqual(DEFAULT_STATE);
@@ -49,7 +49,5 @@ describe('Reducer: offers', () => {
         commentsCount: fakeCommentsCount + 1,
       });
   });
-
-
 });
 
