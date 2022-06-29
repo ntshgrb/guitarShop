@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { NameSpace } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setPriceRange } from '../../store/reducers/catalog-filter';
 import { setGuitarsCount } from '../../store/reducers/guitars';
 import { getGuitarsByPage } from '../../store/selectors/selectors';
 import { SortingOrderType, SortingType } from '../../types/catalog-settings-types';
@@ -21,7 +22,8 @@ function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Eleme
 
   useEffect(() => {
     dispatch(setGuitarsCount(guitarsCount));
-  }, [dispatch, guitarsCount]);
+    dispatch(setPriceRange(currentGuitarsList));
+  }, [dispatch, guitarsCount, currentGuitarsList]);
 
   if (currentGuitarsList.length === 0) {
     return (
