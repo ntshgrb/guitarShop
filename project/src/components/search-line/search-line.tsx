@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
@@ -11,8 +11,27 @@ function SearchLine(): JSX.Element {
   const [ searchValue, setSearchValue ] = useState<string>('');
   const [ searchIsActive, setSearchActive ] = useState(false);
   const searchRef = useRef<HTMLInputElement| null>(null);
+  const searchElementRef = useRef<HTMLDivElement | null>(null);
 
   const searchResults = useAppSelector(selectSearchData(searchValue));
+
+  const handleDocumentClick = (event: MouseEvent) => {
+    if(searchElementRef.current && event.target && !searchElementRef.current.contains(event.target as Node)) {
+      setSearchActive(false);
+    }
+  };
+
+  useEffect(() => {
+    if (searchIsActive) {
+      document.addEventListener('click', handleDocumentClick);
+      return;
+    }
+    document.removeEventListener('click', handleDocumentClick);
+  }, [searchIsActive]);
+
+  const onInputFocus = () => {
+    setSearchActive(true);
+  };
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     switch (event.target.value.length) {
@@ -50,7 +69,7 @@ function SearchLine(): JSX.Element {
   const onFormSubmit = (event: React.FormEvent) => event.preventDefault();
 
   return (
-    <div className="form-search">
+    <div ref={searchElementRef} className="form-search">
       <form onSubmit={onFormSubmit} className="form-search__form" id="form-search">
         <button className="form-search__submit" type="submit">
           <svg className="form-search__icon" width="14" height="15" aria-hidden="true">
@@ -60,6 +79,7 @@ function SearchLine(): JSX.Element {
         <input
           value={searchValue}
           onChange={onInputChange}
+          onFocus={onInputFocus}
           ref={searchRef}
           className="form-search__input"
           id="search"
