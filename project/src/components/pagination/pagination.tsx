@@ -1,18 +1,18 @@
-import { useAppDispatch } from '../../hooks';
-import { AppRoute, MAX_GUITARS_COUNT } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { AppRoute, MAX_GUITARS_COUNT, NameSpace } from '../../const';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
 import { useEffect } from 'react';
 
 type PaginationProps = {
-  currentCatalogPage: number,
   guitarsCount: number,
 }
 
-function Pagination({currentCatalogPage, guitarsCount}: PaginationProps): JSX.Element {
+function Pagination({guitarsCount}: PaginationProps): JSX.Element {
   const dispatch = useAppDispatch();
   const param = useParams();
   const [searchParams] = useSearchParams();
+  const currentCatalogPage = useAppSelector((state) => state[NameSpace.guitars].currentCatalogPage);
 
   const totalPages = Math.ceil(guitarsCount / MAX_GUITARS_COUNT);
 
@@ -23,10 +23,10 @@ function Pagination({currentCatalogPage, guitarsCount}: PaginationProps): JSX.El
   }
 
   useEffect(() => {
-    if (pageNumber && pageNumber !== currentCatalogPage) {
+    if (pageNumber !== null && pageNumber !== currentCatalogPage) {
       dispatch(setCurrentCatalogPage(pageNumber));
     }
-  }, []);
+  }, [currentCatalogPage, dispatch, pageNumber]);
 
   const onPageClick = (page: number) => {
     dispatch(setCurrentCatalogPage(page));

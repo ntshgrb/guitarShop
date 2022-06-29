@@ -25,7 +25,7 @@ describe('component: Pagination', () => {
     render(
       <BrowserRouter >
         <Provider store={store}>
-          <Pagination currentCatalogPage={datatype.number()} guitarsCount={datatype.number()} />
+          <Pagination guitarsCount={datatype.number()} />
         </Provider>
       </BrowserRouter>,
     );
@@ -52,7 +52,7 @@ describe('component: Pagination', () => {
     render(
       <BrowserRouter >
         <Provider store={store}>
-          <Pagination currentCatalogPage={datatype.number()} guitarsCount={datatype.number()}/>
+          <Pagination guitarsCount={datatype.number()}/>
         </Provider>
       </BrowserRouter>,
     );

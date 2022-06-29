@@ -76,9 +76,9 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         if (+event.target.value > +userMaxPrice && userMaxPrice !== '') {
           minPriceRef.current?.setCustomValidity(`Не больше ${userMaxPrice.toLocaleString()} руб.`);
         } else if (maxPrice && +event.target.value > maxPrice) {
-          minPriceRef.current?.setCustomValidity(`Не больше ${maxPrice.toLocaleString()} руб.`);
+          minPriceRef.current?.setCustomValidity(`Цена самой дорогой гитары - ${maxPrice.toLocaleString()} руб.`);
         } else if (minPrice && +event.target.value < minPrice) {
-          minPriceRef.current?.setCustomValidity(`Не меньше ${minPrice.toLocaleString()} руб.`);
+          minPriceRef.current?.setCustomValidity(`Цена самой недорогой гитары ${minPrice.toLocaleString()} руб.`);
         } else {
           minPriceRef.current?.setCustomValidity('');
         }
@@ -87,11 +87,11 @@ function PriceRange({ resetData, setResetPrice }: PriceRangeProps): JSX.Element 
         break;
       case (RangeOfPrice.End):
         if (maxPrice && +event.target.value > maxPrice) {
-          maxPriceRef.current?.setCustomValidity(`Не больше ${maxPrice.toLocaleString()} руб.`);
+          maxPriceRef.current?.setCustomValidity(`Цена самой дорогой гитары - ${maxPrice.toLocaleString()} руб.`);
         } else if (+event.target.value < +userMinPrice) {
           maxPriceRef.current?.setCustomValidity(`Не меньше ${userMinPrice.toLocaleString()} руб.`);
         } else if (minPrice && +event.target.value < minPrice) {
-          maxPriceRef.current?.setCustomValidity(`Не меньше ${minPrice.toLocaleString()} руб.`);
+          maxPriceRef.current?.setCustomValidity(`Цена самой недорогой гитары - ${minPrice.toLocaleString()} руб.`);
         } else {
           maxPriceRef.current?.setCustomValidity('');
         }

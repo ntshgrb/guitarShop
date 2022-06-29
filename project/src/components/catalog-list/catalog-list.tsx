@@ -38,7 +38,7 @@ function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Eleme
           currentGuitarsList.map( (guitar) => <CatalogCard guitarItem={guitar} key={guitar.id}/>)
         }
       </div>
-      <Pagination currentCatalogPage={currentCatalogPage} guitarsCount={guitarsCount}/>
+      <Pagination guitarsCount={guitarsCount}/>
     </>
   );
 }

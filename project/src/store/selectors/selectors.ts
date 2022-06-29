@@ -44,6 +44,8 @@ export const getGuitarsByPage = (page: number, props: SortingSettingsType) => cr
       guitarsList = guitarsList.filter((item) => activeStrings.includes(item.stringCount));
     }
 
+    const fullGuitarsList = guitarsList;
+
     if (priceRange && priceRange.userMaxPrice !== null && priceRange.userMinPrice !== null) {
       guitarsList = guitarsList.filter(
         (item) => priceRange.userMaxPrice !== null && priceRange.userMinPrice !== null &&
@@ -51,7 +53,7 @@ export const getGuitarsByPage = (page: number, props: SortingSettingsType) => cr
     }
 
     return {
-      fullGuitarsList: guitarsList,
+      fullGuitarsList: fullGuitarsList,
       currentGuitarsList: guitarsList.slice(firstGuitarIndex, lastGuitarIndex),
       guitarsCount: guitarsList.length,
     };

@@ -15,6 +15,7 @@ function CatalogFilter(): JSX.Element {
   const [selectedTypes, setSelectedTypes ] =  useState<string[]>([]);
   const [activeStrings, setActiveStrings] = useState<number[]>([]);
   const [selectedStrings, setSelectedStrings] = useState<number[]>([]);
+  const [ needNavigation, setNeedNavigatin ] = useState<boolean>(false);
 
   const stringsCount = Array.from(new Set(availableTypes
     .reduce( (previousValue, currentValue) => [...previousValue, ...currentValue.strings], [] as number[])));
@@ -47,8 +48,13 @@ function CatalogFilter(): JSX.Element {
 
     dispatch(setGuitarType(selectedTypes));
     setSearchParams(searchParams);
-    dispatch(setCurrentCatalogPage(1));
-    navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
+
+    if (needNavigation) {
+      setNeedNavigatin(false);
+      dispatch(setCurrentCatalogPage(1));
+      navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
+    }
+
   }, [dispatch, selectedTypes]);
 
   useEffect(() => {
@@ -75,8 +81,11 @@ function CatalogFilter(): JSX.Element {
     }
     dispatch(setStringsCount(selectedStrings));
     setSearchParams(searchParams);
-    dispatch(setCurrentCatalogPage(1));
-    navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
+    if(needNavigation) {
+      setNeedNavigatin(false);
+      dispatch(setCurrentCatalogPage(1));
+      navigate(AppRoute.CatalogMain, {state: searchParams.toString()});
+    }
   }, [dispatch, selectedStrings]);
 
   const isDisabled = (count: number) => (selectedTypes.length > 0) ? !activeStrings.includes(count) : false;
@@ -88,6 +97,7 @@ function CatalogFilter(): JSX.Element {
       const typeIndex = selectedTypes.indexOf(event.target.name);
       setSelectedTypes((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     }
+    setNeedNavigatin(true);
   };
 
   const onStringsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,6 +107,7 @@ function CatalogFilter(): JSX.Element {
       const typeIndex = selectedStrings.indexOf(Number(event.target.dataset.strings));
       setSelectedStrings((prevValue) => [...prevValue.slice(0, typeIndex), ...prevValue.slice(typeIndex + 1)]);
     }
+    setNeedNavigatin(true);
   };
 
   const onResetButtonClick = (event: React.MouseEvent) => {
