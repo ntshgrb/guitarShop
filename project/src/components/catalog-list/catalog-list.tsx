@@ -18,12 +18,12 @@ function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Eleme
   const currentCatalogPage = useAppSelector((state) => state[NameSpace.guitars].currentCatalogPage);
 
 
-  const {currentGuitarsList, guitarsCount} = useAppSelector(getGuitarsByPage(currentCatalogPage, {sortingType, sortingOrder}));
+  const {fullGuitarsList, currentGuitarsList, guitarsCount} = useAppSelector(getGuitarsByPage(currentCatalogPage, {sortingType, sortingOrder}));
 
   useEffect(() => {
     dispatch(setGuitarsCount(guitarsCount));
-    dispatch(setPriceRange(currentGuitarsList));
-  }, [dispatch, guitarsCount, currentGuitarsList]);
+    dispatch(setPriceRange(fullGuitarsList));
+  }, [dispatch, guitarsCount, currentGuitarsList, fullGuitarsList]);
 
   if (currentGuitarsList.length === 0) {
     return (

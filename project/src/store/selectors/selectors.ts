@@ -51,6 +51,7 @@ export const getGuitarsByPage = (page: number, props: SortingSettingsType) => cr
     }
 
     return {
+      fullGuitarsList: guitarsList,
       currentGuitarsList: guitarsList.slice(firstGuitarIndex, lastGuitarIndex),
       guitarsCount: guitarsList.length,
     };
