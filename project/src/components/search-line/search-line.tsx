@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { selectSearchData } from '../../store/selectors/search-selector';
+import { isEnterKey } from '../../utils/utils';
 import './search-line.css';
 
 function SearchLine(): JSX.Element {
@@ -38,6 +39,14 @@ function SearchLine(): JSX.Element {
     searchRef.current && searchRef.current.focus();
   };
 
+  const onResultKeyDown = (event: React.KeyboardEvent, id: number) => {
+    if (isEnterKey(event)) {
+      setSearchActive(false);
+      setSearchValue('');
+      navigate( `${AppRoute.ProductPage}${id}`);
+    }
+  };
+
   const onFormSubmit = (event: React.FormEvent) => event.preventDefault();
 
   return (
@@ -68,6 +77,7 @@ function SearchLine(): JSX.Element {
                 <li
                   key={`${result.id}${result.name}`}
                   onClick={() => onSearchItemClick(result.id)}
+                  onKeyDown={(event) => onResultKeyDown(event, result.id)}
                   className="form-search__select-item"
                   data-index={result.id}
                   tabIndex={0}
