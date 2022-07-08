@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
@@ -41,11 +41,11 @@ function Header(): JSX.Element {
           </ul>
         </nav>
         <SearchLine />
-        <a className="header__cart-link" href="#" aria-label="Корзина">
+        <Link to={AppRoute.Cart} className="header__cart-link" aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">2</span>
-        </a>
+        </Link>
       </div>
     </header>
   );
