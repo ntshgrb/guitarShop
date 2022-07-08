@@ -3,6 +3,7 @@ import FocusLock from 'react-focus-lock';
 import { RemoveScroll } from 'react-remove-scroll';
 import { guitarTypes } from '../../const';
 import { useAppDispatch } from '../../hooks';
+import { addToCart } from '../../store/reducers/cart';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getFormattedPrice, getPreviewImage, isEscKey } from '../../utils/utils';
@@ -33,6 +34,11 @@ function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
     };
   });
 
+  const onAddToCart = () => {
+    dispatch(addToCart(guitar));
+    dispatch(toggleAddToCartModal(false));
+  };
+
   return (
     <RemoveScroll>
       <FocusLock>
@@ -52,7 +58,11 @@ function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
                   </div>
                 </div>
                 <div className="modal__button-container">
-                  <button className="button button--red button--big modal__button modal__button--add">Добавить в корзину</button>
+                  <button
+                    onClick={onAddToCart}
+                    className="button button--red button--big modal__button modal__button--add"
+                  >Добавить в корзину
+                  </button>
                 </div>
                 <button onClick={() => dispatch(toggleAddToCartModal(false))} className="modal__close-btn button-cross" type="button" aria-label="Закрыть"><span className="button-cross__icon"></span><span className="modal__close-btn-interactive-area"></span>
                 </button>

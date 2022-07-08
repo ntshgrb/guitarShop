@@ -22,6 +22,7 @@ export enum NameSpace {
   currentGuitar = 'CURRENT_GUITAR',
   utils = 'UTILS',
   catalogFilter = 'CATALOG_FILTER',
+  cart = 'CART',
 }
 
 export enum APIRoute {

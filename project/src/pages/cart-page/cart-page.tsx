@@ -1,21 +1,10 @@
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { getFormattedPrice, getPreviewImage } from '../../utils/utils';
-import { BreadcrumbsNameSpace, guitarTypes } from '../../const';
+import { BreadcrumbsNameSpace, guitarTypes, NameSpace } from '../../const';
+import { useAppSelector } from '../../hooks';
 
 function CartPage(): JSX.Element {
-  const fakeProducts = [
-    {
-      id: 123,
-      name: 'ЭлектроГитара Честер bass',
-      vendorCode: 'SO757575',
-      type: 'electric',
-      description: 'strdding',
-      previewImg: 'img/content/catalog-product-2.jpg',
-      stringCount: 6,
-      rating: 3,
-      price: 17500 ,
-    },
-  ];
+  const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
 
   return (
     <main className="page-content">
@@ -27,7 +16,8 @@ function CartPage(): JSX.Element {
         <div className="cart">
 
           {
-            fakeProducts.map((product) => {
+            cartList.map((cartListItem) => {
+              const product = cartListItem.product;
               const image = getPreviewImage(product.previewImg);
               const price = getFormattedPrice(product.price);
 
