@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, BreadcrumbsNameSpace } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
 
@@ -29,7 +29,7 @@ function Breadcrumbs({ name }: BreadcrumbsProps): JSX.Element {
         <NavLink className="link" to={AppRoute.CatalogMain}>Каталог</NavLink>
       </li>
       {
-        location.pathname.includes('/guitar/') ? (
+        location.pathname.includes(BreadcrumbsNameSpace.Guitar) || location.pathname.includes(BreadcrumbsNameSpace.Cart) ? (
           <li className="breadcrumbs__item">
             <a className="link">{name}</a>
           </li>) :

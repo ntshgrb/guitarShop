@@ -112,3 +112,9 @@ export enum RangeOfPrice {
   Start = 'от',
   End = 'до',
 }
+
+export enum BreadcrumbsNameSpace {
+  Guitar = '/guitar/',
+  Cart = '/cart',
+  CartTitle = 'Корзина',
+}

@@ -1,6 +1,6 @@
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { getFormattedPrice, getPreviewImage } from '../../utils/utils';
-import { guitarTypes } from '../../const';
+import { BreadcrumbsNameSpace, guitarTypes } from '../../const';
 
 function CartPage(): JSX.Element {
   const fakeProducts = [
@@ -22,7 +22,7 @@ function CartPage(): JSX.Element {
       <div className="container">
         <h1 className="title title--bigger page-content__title">Корзина</h1>
 
-        <Breadcrumbs />
+        <Breadcrumbs name={BreadcrumbsNameSpace.CartTitle}/>
 
         <div className="cart">
 
