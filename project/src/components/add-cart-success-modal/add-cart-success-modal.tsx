@@ -1,7 +1,7 @@
 import { RemoveScroll } from 'react-remove-scroll';
 import FocusLock from 'react-focus-lock';
 import './add-cart-success-modal.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { toggleAddToCartSuccess } from '../../store/reducers/utils';
@@ -11,10 +11,18 @@ import { useEffect } from 'react';
 function AddCartSuccessModal(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const onToCartClick = () => {
     dispatch(toggleAddToCartSuccess(false));
     navigate(AppRoute.Cart);
+  };
+
+  const onContinueClick = () => {
+    dispatch(toggleAddToCartSuccess(false));
+    if(location.pathname.includes(AppRoute.ProductPage)) {
+      navigate(AppRoute.CatalogMain);
+    }
   };
 
   const documentKeyDownHandler = (event: KeyboardEvent) => {
@@ -50,7 +58,7 @@ function AddCartSuccessModal(): JSX.Element {
                   >Перейти в корзину
                   </button>
                   <button
-                    onClick={() => dispatch(toggleAddToCartSuccess(false))}
+                    onClick={onContinueClick}
                     className="button button--black-border button--small modal__button modal__button--right"
                   >Продолжить покупки
                   </button>

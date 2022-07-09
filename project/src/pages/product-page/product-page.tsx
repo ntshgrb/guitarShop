@@ -13,6 +13,7 @@ import CommentSentModal from '../../components/comment-sent-modal/comment-sent-m
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
 import AddCartModal from '../../components/add-cart-modal/add-cart-modal';
+import AddCartSuccessModal from '../../components/add-cart-success-modal/add-cart-success-modal';
 
 function ProductPage(): JSX.Element | null {
   const pathParams = useParams();
@@ -23,6 +24,7 @@ function ProductPage(): JSX.Element | null {
   const guitar = useAppSelector((state) => state[NameSpace.currentGuitar].guitar);
   const commentsCount = useAppSelector((state) => state[NameSpace.currentGuitar].commentsCount);
   const addToCartIsOpen = useAppSelector((state) => state[NameSpace.utils].addToCartModal);
+  const addToCartSuccessIsOpen = useAppSelector((state) => state[NameSpace.utils].addToCartSuccess);
 
   const guitarId = pathParams.id;
 
@@ -86,12 +88,11 @@ function ProductPage(): JSX.Element | null {
           <div className="product-container__price-wrapper">
             <p className="product-container__price-info product-container__price-info--title">Цена:</p>
             <p className="product-container__price-info product-container__price-info--value">{guitarPrice}</p>
-            <a
+            <button
               onClick={onAddToCartClick}
               className="button button--red button--big product-container__button"
-              href="#"
             >Добавить в корзину
-            </a>
+            </button>
           </div>
         </div>
 
@@ -114,6 +115,10 @@ function ProductPage(): JSX.Element | null {
 
       {
         addToCartIsOpen ? <AddCartModal guitar={guitar} /> : null
+      }
+
+      {
+        addToCartSuccessIsOpen ? <AddCartSuccessModal /> : null
       }
 
 
