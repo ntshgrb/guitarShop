@@ -2,6 +2,7 @@ import { toggleAddToCartModal, utils } from './utils';
 
 const DEFAULT_STATE = {
   addToCartModal: false,
+  addToCartSuccess: false,
 };
 
 describe('Reducer: utils', () => {

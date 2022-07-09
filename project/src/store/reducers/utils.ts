@@ -3,10 +3,12 @@ import { NameSpace } from '../../const';
 
 type InitialState = {
   addToCartModal: boolean,
+  addToCartSuccess: boolean,
 }
 
 const initialState: InitialState = {
   addToCartModal: false,
+  addToCartSuccess: false,
 };
 
 export const utils = createSlice({
@@ -16,7 +18,10 @@ export const utils = createSlice({
     toggleAddToCartModal: (state, action) => {
       state.addToCartModal = action.payload;
     },
+    toggleAddToCartSuccess: (state, action) => {
+      state.addToCartSuccess = action.payload;
+    },
   },
 });
 
-export const { toggleAddToCartModal } = utils.actions;
+export const { toggleAddToCartModal, toggleAddToCartSuccess } = utils.actions;

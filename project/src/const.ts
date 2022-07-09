@@ -39,7 +39,7 @@ export enum AppRoute {
   ProductPage = '/guitar/',
   ProductPageId = '/guitar/:id',
   NotFound = 'notfound',
-  Cart = 'cart',
+  Cart = '/cart',
 }
 
 export const guitarTypes = {

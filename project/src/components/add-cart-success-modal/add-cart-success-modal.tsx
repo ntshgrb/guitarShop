@@ -1,8 +1,36 @@
 import { RemoveScroll } from 'react-remove-scroll';
 import FocusLock from 'react-focus-lock';
 import './add-cart-success-modal.css';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { toggleAddToCartSuccess } from '../../store/reducers/utils';
+import { isEscKey } from '../../utils/utils';
+import { useEffect } from 'react';
 
 function AddCartSuccessModal(): JSX.Element {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const onToCartClick = () => {
+    dispatch(toggleAddToCartSuccess(false));
+    navigate(AppRoute.Cart);
+  };
+
+  const documentKeyDownHandler = (event: KeyboardEvent) => {
+    if (isEscKey(event)) {
+      dispatch(toggleAddToCartSuccess(false));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', documentKeyDownHandler);
+    document.querySelector('.modal__overlay')?.addEventListener('click', () => dispatch(toggleAddToCartSuccess(false)));
+    return () => {
+      document.removeEventListener('keydown', documentKeyDownHandler);
+    };
+  });
+
   return (
     <RemoveScroll>
       <FocusLock>
@@ -16,10 +44,23 @@ function AddCartSuccessModal(): JSX.Element {
                 </svg>
                 <p className="modal__message">Товар успешно добавлен в корзину</p>
                 <div className="modal__button-container modal__button-container--add">
-                  <button className="button button--small modal__button">Перейти в корзину</button>
-                  <button className="button button--black-border button--small modal__button modal__button--right">Продолжить покупки</button>
+                  <button
+                    onClick={onToCartClick}
+                    className="button button--small modal__button"
+                  >Перейти в корзину
+                  </button>
+                  <button
+                    onClick={() => dispatch(toggleAddToCartSuccess(false))}
+                    className="button button--black-border button--small modal__button modal__button--right"
+                  >Продолжить покупки
+                  </button>
                 </div>
-                <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
+                <button
+                  onClick={() => dispatch(toggleAddToCartSuccess(false))}
+                  className="modal__close-btn button-cross"
+                  type="button"
+                  aria-label="Закрыть"
+                >
                   <span className="button-cross__icon"></span>
                   <span className="modal__close-btn-interactive-area"></span>
                 </button>

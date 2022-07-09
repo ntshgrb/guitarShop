@@ -4,7 +4,7 @@ import { RemoveScroll } from 'react-remove-scroll';
 import { guitarTypes } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { addToCart } from '../../store/reducers/cart';
-import { toggleAddToCartModal } from '../../store/reducers/utils';
+import { toggleAddToCartModal, toggleAddToCartSuccess } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getFormattedPrice, getPreviewImage, isEscKey } from '../../utils/utils';
 import './add-cart-modal.css';
@@ -37,6 +37,7 @@ function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
   const onAddToCart = () => {
     dispatch(addToCart(guitar));
     dispatch(toggleAddToCartModal(false));
+    dispatch(toggleAddToCartSuccess(true));
   };
 
   return (

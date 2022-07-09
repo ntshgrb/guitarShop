@@ -11,10 +11,13 @@ import AddCartModal from '../../components/add-cart-modal/add-cart-modal';
 import { toast } from 'react-toastify';
 import { SortingOrderType, SortingType } from '../../types/catalog-settings-types';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import AddCartSuccessModal from '../../components/add-cart-success-modal/add-cart-success-modal';
 
 function CatalogPage(): JSX.Element {
   const isDataLoading = useAppSelector((state) => state[NameSpace.guitars].loading);
   const addToCartIsOpen = useAppSelector((state) => state[NameSpace.utils].addToCartModal);
+  const addToCartSuccessIsOpen = useAppSelector((state) => state[NameSpace.utils].addToCartSuccess);
+
 
   const [ guitarToCart, setGuitarToCart ] = useState<Guitar | null>(null);
   const GuitarToCartContextValue = useMemo(() => ({guitarToCart, setGuitarToCart}), [guitarToCart]);
@@ -107,6 +110,10 @@ function CatalogPage(): JSX.Element {
 
           {
             addToCartIsOpen && !guitarToCart ? toast.info('Произошла ошибка, невозможно добавить товар в корзину') : null
+          }
+
+          {
+            addToCartSuccessIsOpen ? <AddCartSuccessModal /> : null
           }
 
         </div>
