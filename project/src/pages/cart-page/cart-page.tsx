@@ -1,10 +1,12 @@
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { getFormattedPrice, getPreviewImage } from '../../utils/utils';
 import { BreadcrumbsNameSpace, guitarTypes, NameSpace } from '../../const';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { decrementQuantity, incrementQuantity, changeQuantity } from '../../store/reducers/cart';
 
 function CartPage(): JSX.Element {
   const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
+  const dispatch = useAppDispatch();
 
   return (
     <main className="page-content">
@@ -21,6 +23,23 @@ function CartPage(): JSX.Element {
               const image = getPreviewImage(product.previewImg);
               const price = getFormattedPrice(product.price);
 
+              const onDecrementClick = () => {
+                dispatch(decrementQuantity(cartListItem));
+              };
+
+              const onIncrementClick = () => {
+                dispatch(incrementQuantity(cartListItem));
+              };
+
+              const onQuatityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+                const userQuantity = +event.target.value;
+
+                dispatch(changeQuantity({
+                  userQuantity,
+                  cartListItem,
+                }));
+              };
+
               return (
                 <div key={product.id}className="cart-item">
                   <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить">
@@ -36,19 +55,38 @@ function CartPage(): JSX.Element {
                     <p className="product-info__info">{guitarTypes[product.type as keyof (typeof guitarTypes)]}, {product.stringCount} струнная</p>
                   </div>
                   <div className="cart-item__price">{price}</div>
+
                   <div className="quantity cart-item__quantity">
-                    <button className="quantity__button" aria-label="Уменьшить количество">
+                    <button
+                      onClick={onDecrementClick}
+                      className="quantity__button"
+                      aria-label="Уменьшить количество"
+                    >
                       <svg width="8" height="8" aria-hidden="true">
                         <use xlinkHref="#icon-minus"></use>
                       </svg>
                     </button>
-                    <input className="quantity__input" type="number" placeholder="1" id="2-count" name="2-count" max="99" />
-                    <button className="quantity__button" aria-label="Увеличить количество">
+
+                    <input
+                      onChange={onQuatityChange}
+                      value={cartListItem.quantity}
+                      className="quantity__input"
+                      type="number"
+                      id="2-count" name="2-count"
+                      max="99"
+                    />
+
+                    <button
+                      onClick={onIncrementClick}
+                      className="quantity__button"
+                      aria-label="Увеличить количество"
+                    >
                       <svg width="8" height="8" aria-hidden="true">
                         <use xlinkHref="#icon-plus"></use>
                       </svg>
                     </button>
                   </div>
+
                   <div className="cart-item__price-total">17 500 ₽</div>
                 </div>
               );
