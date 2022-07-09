@@ -16,7 +16,7 @@ type CataloListProps = {
 function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Element {
   const dispatch = useAppDispatch();
   const currentCatalogPage = useAppSelector((state) => state[NameSpace.guitars].currentCatalogPage);
-
+  const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
 
   const {fullGuitarsList, currentGuitarsList, guitarsCount} = useAppSelector(getGuitarsByPage(currentCatalogPage, {sortingType, sortingOrder}));
 
@@ -35,7 +35,7 @@ function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Eleme
     <>
       <div className="cards catalog__cards">
         {
-          currentGuitarsList.map( (guitar) => <CatalogCard guitarItem={guitar} key={guitar.id}/>)
+          currentGuitarsList.map( (guitar) => <CatalogCard guitarItem={guitar} key={guitar.id} cartList={cartList} />)
         }
       </div>
       <Pagination guitarsCount={guitarsCount}/>

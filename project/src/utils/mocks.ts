@@ -58,3 +58,9 @@ export const fakeGuitarData = {
   rating: 4,
   price: 17500,
 };
+
+export const fakeCartItem = {
+  id: 1,
+  product: fakeGuitarData,
+  quantity: 1,
+};

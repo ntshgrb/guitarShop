@@ -1,21 +1,24 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute, NameSpace, ratingStarSize, Rating } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchGuitarComments } from '../../store/api-actions';
 import { GuitarToCartContext } from '../../store/guitar-to-cart-context';
 import { toggleAddToCartModal } from '../../store/reducers/utils';
+import { CartItem } from '../../types/cart-item';
 import { Guitar } from '../../types/guitar';
 import { getPreviewImage, getFormattedPrice } from '../../utils/utils';
 import RatingStars from '../rating-stars/rating-stars';
 
 type CatalogCardProps = {
-  guitarItem: Guitar
+  guitarItem: Guitar,
+  cartList: CartItem[],
 }
 
-function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
+function CatalogCard({ guitarItem, cartList }: CatalogCardProps): JSX.Element {
   const { previewImg, rating, name, price, id } = guitarItem;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchGuitarComments(id));
@@ -32,10 +35,21 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
   const guitarImage = getPreviewImage(previewImg);
   const guitarPrice = getFormattedPrice(price);
 
-  const onAddToCartClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const isInCart = cartList.some((cartListItem) => cartListItem.id === id);
+
+  const onAddToCartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     dispatch(toggleAddToCartModal(true));
     setGuitarToCart(guitarItem);
+  };
+
+  const onToCartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    navigate(AppRoute.Cart);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -73,13 +87,22 @@ function CatalogCard({ guitarItem }: CatalogCardProps): JSX.Element {
         >
           Подробнее
         </Link>
-        <a
-          onClick={onAddToCartClick}
-          className="button button--red button--mini button--add-to-cart"
-          href="#"
-        >
-            Купить
-        </a>
+
+        {
+          isInCart ?
+            <button
+              onClick={onToCartClick}
+              className="button button--red-border button--mini button--in-cart"
+            >В Корзине
+            </button> :
+
+            <button
+              onClick={onAddToCartClick}
+              className="button button--red button--mini button--add-to-cart"
+            >
+                Купить
+            </button>
+        }
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import CatalogCard from './catalog-card';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { fakeGuitarData, fakeGuitars, fakeGuitarsComments } from '../../utils/mocks';
+import { fakeGuitarData, fakeGuitars, fakeGuitarsComments, fakeCartItem } from '../../utils/mocks';
 import * as Redux from 'react-redux';
 import { NameSpace } from '../../const';
 
@@ -22,12 +22,13 @@ describe('component: CatalogCard', () => {
   it('Should render correctly', () => {
     const dispatch = jest.fn();
     const useDispatch = jest.spyOn(Redux, 'useDispatch');
+    const fakeCartList = [fakeCartItem];
     useDispatch.mockReturnValue(dispatch);
 
     render(
       <BrowserRouter >
         <Provider store={store}>
-          <CatalogCard guitarItem={fakeGuitarData} />
+          <CatalogCard guitarItem={fakeGuitarData} cartList={fakeCartList}/>
         </Provider>
       </BrowserRouter>,
     );

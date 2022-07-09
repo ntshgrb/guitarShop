@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
-import { Cart } from '../../types/cart';
+import { CartItem } from '../../types/cart-item';
 
 type InitialState = {
-  cartList: Cart[],
+  cartList: CartItem[],
 }
 
 const initialState: InitialState = {
