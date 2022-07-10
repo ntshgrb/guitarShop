@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { NameSpace } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setPriceRange } from '../../store/reducers/catalog-filter';
@@ -43,4 +43,4 @@ function CatalogList( { sortingType, sortingOrder }: CataloListProps): JSX.Eleme
   );
 }
 
-export default CatalogList;
+export default memo(CatalogList);

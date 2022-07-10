@@ -46,10 +46,10 @@ export const cart = createSlice({
       state.cartList = [...state.cartList.slice(0, productIndex), productToUpdate, ...state.cartList.slice(productIndex + 1)];
     },
     deleteProduct: (state, action) => {
-      const productIndex = state.cartList.findIndex((cartItem) => cartItem.id === action.payload.id);
+      const productIndex = state.cartList.findIndex((cartItem) => cartItem.id === action.payload);
       state.cartList = [...state.cartList.slice(0, productIndex), ...state.cartList.slice(productIndex + 1)];
     },
   },
 });
 
-export const { addToCart, decrementQuantity, incrementQuantity, changeQuantity } = cart.actions;
+export const { addToCart, decrementQuantity, incrementQuantity, changeQuantity, deleteProduct } = cart.actions;

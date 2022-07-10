@@ -1,9 +1,11 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { guitarTypes } from '../../const';
 import { useAppDispatch } from '../../hooks';
+import useModal from '../../hooks/useModal';
 import { decrementQuantity, incrementQuantity, changeQuantity } from '../../store/reducers/cart';
 import { CartItem } from '../../types/cart-item';
 import { getFormattedPrice, getPreviewImage } from '../../utils/utils';
+import CartDeleteModal from '../cart-delete-modal/cart-delete-modal';
 
 type CartItemProps = {
   cartListItem: CartItem,
@@ -11,16 +13,24 @@ type CartItemProps = {
 
 function CartListItem({ cartListItem }: CartItemProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const quantityRef = useRef<null | HTMLInputElement>(null);
+  const [ itemQuantity, setItemQuantity ] = useState<number | ''>(cartListItem.quantity);
+  const { isShowing, toggle } = useModal();
+
   const product = cartListItem.product;
+  const { name, vendorCode, stringCount } = product;
   const image = getPreviewImage(product.previewImg);
   const price = getFormattedPrice(product.price);
-  const quantityRef = useRef<null | HTMLInputElement>(null);
-
-  const [ itemQuantity, setItemQuantity ] = useState(cartListItem.quantity);
+  const itemType = guitarTypes[product.type as keyof (typeof guitarTypes)];
 
   useEffect(() => setItemQuantity(cartListItem.quantity), [cartListItem.quantity]);
 
   const onDecrementClick = () => {
+    if(itemQuantity === 1) {
+      toggle();
+      return;
+    }
+
     dispatch(decrementQuantity(cartListItem));
   };
 
@@ -42,7 +52,12 @@ function CartListItem({ cartListItem }: CartItemProps): JSX.Element {
   };
 
   const onQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setItemQuantity(+event.target.value);
+    event.target.value === '' ? setItemQuantity('') : setItemQuantity(+event.target.value);
+
+    if(event.target.value !== '' && +event.target.value === 0 && quantityRef.current) {
+      toggle();
+      return;
+    }
 
     if(+event.target.value > 99 && quantityRef.current) {
       quantityRef.current.setCustomValidity('Не больше 99');
@@ -55,65 +70,71 @@ function CartListItem({ cartListItem }: CartItemProps): JSX.Element {
     quantityRef.current?.reportValidity();
   };
 
-  // eslint-disable-next-line no-console
-  const onDeleteClick = () => console.log('hi');
+  const onDeleteClick = () => {
+    toggle();
+  };
 
   return (
-    <div key={product.id}className="cart-item">
-      <button
-        onClick={onDeleteClick}
-        className="cart-item__close-button button-cross"
-        type="button"
-        aria-label="Удалить"
-      >
-        <span className="button-cross__icon"></span>
-        <span className="cart-item__close-button-interactive-area"></span>
-      </button>
-      <div className="cart-item__image">
-        <img src={image.src} srcSet={image.srcSet} width="55" height="130" alt={product.name} />
-      </div>
-      <div className="product-info cart-item__info">
-        <p className="product-info__title">{product.name}</p>
-        <p className="product-info__info">Артикул: {product.vendorCode}</p>
-        <p className="product-info__info">{guitarTypes[product.type as keyof (typeof guitarTypes)]}, {product.stringCount} струнная</p>
-      </div>
-      <div className="cart-item__price">{price}</div>
-
-      <div className="quantity cart-item__quantity">
+    <>
+      <div key={product.id} className="cart-item">
         <button
-          onClick={onDecrementClick}
-          className="quantity__button"
-          aria-label="Уменьшить количество"
+          onClick={onDeleteClick}
+          className="cart-item__close-button button-cross"
+          type="button"
+          aria-label="Удалить"
         >
-          <svg width="8" height="8" aria-hidden="true">
-            <use xlinkHref="#icon-minus"></use>
-          </svg>
+          <span className="button-cross__icon"></span>
+          <span className="cart-item__close-button-interactive-area"></span>
         </button>
+        <div className="cart-item__image">
+          <img src={image.src} srcSet={image.srcSet} width="55" height="130" alt={name} />
+        </div>
+        <div className="product-info cart-item__info">
+          <p className="product-info__title">{name}</p>
+          <p className="product-info__info">Артикул: {vendorCode}</p>
+          <p className="product-info__info">{itemType}, {stringCount} струнная</p>
+        </div>
+        <div className="cart-item__price">{price}</div>
 
-        <input
-          onBlur={onQuatityBlur}
-          onChange={onQuantityChange}
-          value={itemQuantity}
-          ref={quantityRef}
-          className="quantity__input"
-          type="number"
-          id="2-count" name="2-count"
-          max="99"
-        />
+        <div className="quantity cart-item__quantity">
+          <button
+            onClick={onDecrementClick}
+            className="quantity__button"
+            aria-label="Уменьшить количество"
+          >
+            <svg width="8" height="8" aria-hidden="true">
+              <use xlinkHref="#icon-minus"></use>
+            </svg>
+          </button>
 
-        <button
-          onClick={onIncrementClick}
-          className="quantity__button"
-          aria-label="Увеличить количество"
-        >
-          <svg width="8" height="8" aria-hidden="true">
-            <use xlinkHref="#icon-plus"></use>
-          </svg>
-        </button>
+          <input
+            onBlur={onQuatityBlur}
+            onChange={onQuantityChange}
+            value={itemQuantity}
+            ref={quantityRef}
+            className="quantity__input"
+            type="number"
+            id="2-count" name="2-count"
+            max="99"
+          />
+
+          <button
+            onClick={onIncrementClick}
+            className="quantity__button"
+            aria-label="Увеличить количество"
+          >
+            <svg width="8" height="8" aria-hidden="true">
+              <use xlinkHref="#icon-plus"></use>
+            </svg>
+          </button>
+        </div>
+
+        <div className="cart-item__price-total">17 500 ₽</div>
       </div>
-
-      <div className="cart-item__price-total">17 500 ₽</div>
-    </div>
+      {
+        isShowing ? <CartDeleteModal toggle={toggle} itemToDelete={{ image, price, name, stringCount, vendorCode, itemType, id: product.id }} /> : null
+      }
+    </>
   );
 }
 
