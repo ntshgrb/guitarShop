@@ -1,12 +1,10 @@
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
-import { getFormattedPrice, getPreviewImage } from '../../utils/utils';
-import { BreadcrumbsNameSpace, guitarTypes, NameSpace } from '../../const';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { decrementQuantity, incrementQuantity, changeQuantity } from '../../store/reducers/cart';
+import { BreadcrumbsNameSpace, NameSpace } from '../../const';
+import { useAppSelector } from '../../hooks';
+import CartListItem from '../../components/cart-list-item/cart-list-item';
 
 function CartPage(): JSX.Element {
   const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
-  const dispatch = useAppDispatch();
 
   return (
     <main className="page-content">
@@ -18,79 +16,7 @@ function CartPage(): JSX.Element {
         <div className="cart">
 
           {
-            cartList.map((cartListItem) => {
-              const product = cartListItem.product;
-              const image = getPreviewImage(product.previewImg);
-              const price = getFormattedPrice(product.price);
-
-              const onDecrementClick = () => {
-                dispatch(decrementQuantity(cartListItem));
-              };
-
-              const onIncrementClick = () => {
-                dispatch(incrementQuantity(cartListItem));
-              };
-
-              const onQuatityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-                const userQuantity = +event.target.value;
-
-                dispatch(changeQuantity({
-                  userQuantity,
-                  cartListItem,
-                }));
-              };
-
-              return (
-                <div key={product.id}className="cart-item">
-                  <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить">
-                    <span className="button-cross__icon"></span>
-                    <span className="cart-item__close-button-interactive-area"></span>
-                  </button>
-                  <div className="cart-item__image">
-                    <img src={image.src} srcSet={image.srcSet} width="55" height="130" alt={product.name} />
-                  </div>
-                  <div className="product-info cart-item__info">
-                    <p className="product-info__title">{product.name}</p>
-                    <p className="product-info__info">Артикул: {product.vendorCode}</p>
-                    <p className="product-info__info">{guitarTypes[product.type as keyof (typeof guitarTypes)]}, {product.stringCount} струнная</p>
-                  </div>
-                  <div className="cart-item__price">{price}</div>
-
-                  <div className="quantity cart-item__quantity">
-                    <button
-                      onClick={onDecrementClick}
-                      className="quantity__button"
-                      aria-label="Уменьшить количество"
-                    >
-                      <svg width="8" height="8" aria-hidden="true">
-                        <use xlinkHref="#icon-minus"></use>
-                      </svg>
-                    </button>
-
-                    <input
-                      onChange={onQuatityChange}
-                      value={cartListItem.quantity}
-                      className="quantity__input"
-                      type="number"
-                      id="2-count" name="2-count"
-                      max="99"
-                    />
-
-                    <button
-                      onClick={onIncrementClick}
-                      className="quantity__button"
-                      aria-label="Увеличить количество"
-                    >
-                      <svg width="8" height="8" aria-hidden="true">
-                        <use xlinkHref="#icon-plus"></use>
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div className="cart-item__price-total">17 500 ₽</div>
-                </div>
-              );
-            })
+            cartList.map((cartListItem) => <CartListItem key={cartListItem.id} cartListItem={cartListItem} />)
           }
 
           <div className="cart__footer">
