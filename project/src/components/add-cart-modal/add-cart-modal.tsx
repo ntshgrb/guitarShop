@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import FocusLock from 'react-focus-lock';
 import { RemoveScroll } from 'react-remove-scroll';
-import { guitarTypes } from '../../const';
-import { useAppDispatch } from '../../hooks';
-import { addToCart } from '../../store/reducers/cart';
+import { guitarTypes, NameSpace } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { addToCart, incrementQuantity } from '../../store/reducers/cart';
 import { toggleAddToCartModal, toggleAddToCartSuccess } from '../../store/reducers/utils';
 import { Guitar } from '../../types/guitar';
 import { getFormattedPrice, getPreviewImage, isEscKey } from '../../utils/utils';
@@ -15,6 +15,8 @@ type AddCartModalProps = {
 
 function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
+  const isInCart = cartList.find((item) => item.id === guitar.id);
 
   const { name, vendorCode, type, stringCount, price, previewImg } = guitar as Guitar;
   const guitarPrice = getFormattedPrice(price);
@@ -35,7 +37,12 @@ function AddCartModal({ guitar }: AddCartModalProps): JSX.Element {
   });
 
   const onAddToCart = () => {
-    dispatch(addToCart(guitar));
+    if(isInCart) {
+      dispatch(incrementQuantity(guitar));
+    } else {
+      dispatch(addToCart(guitar));
+    }
+
     dispatch(toggleAddToCartModal(false));
     dispatch(toggleAddToCartSuccess(true));
   };
