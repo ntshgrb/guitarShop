@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
-import { useAppDispatch } from '../../hooks';
+import { AppRoute, NameSpace } from '../../const';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setCurrentCatalogPage } from '../../store/reducers/guitars';
 import SearchLine from '../search-line/search-line';
 import './header.css';
@@ -9,6 +9,9 @@ import './header.css';
 function Header(): JSX.Element {
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
+  const cartListCount = cartList.reduce((previousValue, currentValue) => previousValue + currentValue.quantity, 0);
 
   const onLinkClick = () => {
     dispatch(setCurrentCatalogPage(1));
@@ -44,7 +47,12 @@ function Header(): JSX.Element {
         <Link to={AppRoute.Cart} className="header__cart-link" aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">2</span>
+          </svg><span className="visually-hidden">Перейти в корзину</span>
+
+          {
+            cartListCount ? <span className="header__cart-count">{cartListCount}</span> : null
+          }
+
         </Link>
       </div>
     </header>
