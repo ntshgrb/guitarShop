@@ -2,9 +2,13 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { BreadcrumbsNameSpace, NameSpace } from '../../const';
 import { useAppSelector } from '../../hooks';
 import CartListItem from '../../components/cart-list-item/cart-list-item';
+import { getFormattedPrice } from '../../utils/utils';
 
 function CartPage(): JSX.Element {
   const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
+
+  const totalPrice = cartList.reduce((previousValue, currentItem) => previousValue + (currentItem.quantity * currentItem.product.price), 0);
+  const totalPriceFormatted = getFormattedPrice(totalPrice);
 
   return (
     <main className="page-content">
@@ -33,7 +37,12 @@ function CartPage(): JSX.Element {
               </form>
             </div>
             <div className="cart__total-info">
-              <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">52 000 ₽</span></p>
+              <p className="cart__total-item">
+                <span className="cart__total-value-name">Всего:
+                </span>
+                <span className="cart__total-value">{totalPriceFormatted}
+                </span>
+              </p>
               <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className="cart__total-value cart__total-value--bonus">- 3000 ₽</span></p>
               <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">49 000 ₽</span></p>
               <button className="button button--red button--big cart__order-button">Оформить заказ</button>

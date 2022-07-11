@@ -23,6 +23,11 @@ function CartListItem({ cartListItem }: CartItemProps): JSX.Element {
   const price = getFormattedPrice(product.price);
   const itemType = guitarTypes[product.type as keyof (typeof guitarTypes)];
 
+  let totalItemPrice: null | string = null;
+  if(itemQuantity) {
+    totalItemPrice = getFormattedPrice((itemQuantity * product.price));
+  }
+
   useEffect(() => setItemQuantity(cartListItem.quantity), [cartListItem.quantity]);
 
   const onDecrementClick = () => {
@@ -129,7 +134,7 @@ function CartListItem({ cartListItem }: CartItemProps): JSX.Element {
           </button>
         </div>
 
-        <div className="cart-item__price-total">17 500 ₽</div>
+        <div className="cart-item__price-total">{totalItemPrice}</div>
       </div>
       {
         isShowing ? <CartDeleteModal toggle={toggle} itemToDelete={{ image, price, name, stringCount, vendorCode, itemType, id: product.id }} /> : null
