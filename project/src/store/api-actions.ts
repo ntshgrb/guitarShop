@@ -3,7 +3,7 @@ import { AppDispatch, State } from '../types/state';
 import { Guitar } from '../types/guitar';
 import { UserComment } from '../types/comment';
 import { CommentPost } from '../types/comment-post';
-import { APIRoute, AppRoute } from '../const';
+import { APIRoute, AppRoute, couponStatus } from '../const';
 import { AxiosInstance } from 'axios';
 import { loadGuitarsList, setLoading, loadComments } from './reducers/guitars';
 import { loadGuitarData, loadGuitarComments, updateComments } from './reducers/current-guitar';
@@ -11,6 +11,8 @@ import { errorHandle } from '../utils/error-handle';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { setPriceRange } from './reducers/catalog-filter';
+import { CouponPost } from '../types/coupon';
+import { setCoupon } from './reducers/cart';
 
 const toastLoading = {pending: 'Loading...'};
 
@@ -86,6 +88,24 @@ export const postUserComment = createAsyncThunk<void, CommentPost, {
       onSuccess();
     } catch (error) {
       errorHandle(error);
+    }
+  },
+);
+
+export const postCouponAction = createAsyncThunk<void, CouponPost, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  '/coupons',
+  async ({ coupon, setCouponIsPosted }, {dispatch, extra: api}) => {
+    try {
+      const { data } = await api.post(APIRoute.Coupon, {coupon});
+      dispatch(setCoupon(data));
+      setCouponIsPosted(couponStatus.validCoupon);
+    } catch (error) {
+      errorHandle(error);
+      setCouponIsPosted(couponStatus.invalidCoupon);
     }
   },
 );

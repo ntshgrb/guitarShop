@@ -29,6 +29,7 @@ export enum APIRoute {
   GuitarsLimited = '/guitars?_limit=27',
   Guitars = '/guitars',
   Comments = '/comments',
+  Coupon = '/coupons',
 }
 
 export enum AppRoute {
@@ -119,3 +120,14 @@ export enum BreadcrumbsNameSpace {
   Cart = '/cart',
   CartTitle = 'Корзина',
 }
+
+export const couponStatus = {
+  validCoupon: {
+    title: 'Промокод принят',
+    class: 'form-input__message--success',
+  },
+  invalidCoupon: {
+    title: 'неверный промокод',
+    class: 'form-input__message--error',
+  },
+};

@@ -4,10 +4,12 @@ import { CartItem } from '../../types/cart-item';
 
 type InitialState = {
   cartList: CartItem[],
+  coupon: null | number,
 }
 
 const initialState: InitialState = {
   cartList: [],
+  coupon: null,
 };
 
 export const cart = createSlice({
@@ -49,7 +51,10 @@ export const cart = createSlice({
       const productIndex = state.cartList.findIndex((cartItem) => cartItem.id === action.payload);
       state.cartList = [...state.cartList.slice(0, productIndex), ...state.cartList.slice(productIndex + 1)];
     },
+    setCoupon: (state, action) => {
+      state.coupon = action.payload;
+    },
   },
 });
 
-export const { addToCart, decrementQuantity, incrementQuantity, changeQuantity, deleteProduct } = cart.actions;
+export const { addToCart, decrementQuantity, incrementQuantity, changeQuantity, deleteProduct, setCoupon } = cart.actions;
