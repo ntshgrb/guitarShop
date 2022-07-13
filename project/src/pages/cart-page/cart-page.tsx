@@ -10,11 +10,21 @@ import { CouponStatus } from '../../types/coupon';
 function CartPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const cartList = useAppSelector((state) => state[NameSpace.cart].cartList);
+  const couponDiscount = useAppSelector((state) => state[NameSpace.cart].coupon);
+
   const couponRef = useRef<null | HTMLInputElement>(null);
   const [ couponIsPosted, setCouponIsPosted ] = useState<null | CouponStatus>(null);
 
   const totalPrice = cartList.reduce((previousValue, currentItem) => previousValue + (currentItem.quantity * currentItem.product.price), 0);
   const totalPriceFormatted = getFormattedPrice(totalPrice);
+
+  let discountValue = 0;
+  if (couponDiscount) {
+    discountValue = totalPrice * (couponDiscount / 100);
+  }
+
+  const totalCartPrice = totalPrice - discountValue;
+
 
   const oCouponSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -76,8 +86,15 @@ function CartPage(): JSX.Element {
                 <span className="cart__total-value">{totalPriceFormatted}
                 </span>
               </p>
-              <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span><span className="cart__total-value cart__total-value--bonus">- 3000 ₽</span></p>
-              <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">49 000 ₽</span></p>
+              <p className="cart__total-item"><span className="cart__total-value-name">Скидка:</span>
+                {
+                  discountValue === 0 ? <span className="cart__total-value">{getFormattedPrice(discountValue)}</span> :
+                    <span className="cart__total-value cart__total-value--bonus">- {getFormattedPrice(discountValue)}</span>
+                }
+              </p>
+              <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span>
+                <span className="cart__total-value cart__total-value--payment">{getFormattedPrice(totalCartPrice)}</span>
+              </p>
               <button className="button button--red button--big cart__order-button">Оформить заказ</button>
             </div>
           </div>

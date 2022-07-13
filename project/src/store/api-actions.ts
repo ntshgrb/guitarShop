@@ -105,6 +105,7 @@ export const postCouponAction = createAsyncThunk<void, CouponPost, {
       setCouponIsPosted(couponStatus.validCoupon);
     } catch (error) {
       errorHandle(error);
+      dispatch(setCoupon(null));
       setCouponIsPosted(couponStatus.invalidCoupon);
     }
   },
