@@ -51,7 +51,9 @@ function CartPage(): JSX.Element {
         <div className="cart">
 
           {
-            cartList.map((cartListItem) => <CartListItem key={cartListItem.id} cartListItem={cartListItem} />)
+            cartList.length === 0 ?
+              <p>Пока в корзине ничего нет</p> :
+              cartList.map((cartListItem) => <CartListItem key={cartListItem.id} cartListItem={cartListItem} />)
           }
 
           <div className="cart__footer">
