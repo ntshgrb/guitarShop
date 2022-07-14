@@ -3,15 +3,26 @@ import { render, screen } from '@testing-library/react';
 import {configureMockStore} from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import Header from './header';
+import { NameSpace } from '../../const';
+import { fakeCartItem, fakeGuitars } from '../../utils/mocks';
 
 
 const mockStore = configureMockStore();
+const store = mockStore({
+  [NameSpace.cart]: {
+    cartList: [fakeCartItem],
+    coupon: null,
+  },
+  [NameSpace.guitars]: {
+    guitarsList: fakeGuitars,
+  },
+});
 
 describe('Component: Header', () => {
   it('should render correctly', () => {
     render(
       <BrowserRouter >
-        <Provider store={mockStore()}>
+        <Provider store={store}>
           <Header />
         </Provider>
       </BrowserRouter>,

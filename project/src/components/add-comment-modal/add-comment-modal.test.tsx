@@ -29,6 +29,6 @@ describe('component: AddCommentModal', () => {
     expect(screen.getByText(/Ваша Оценка/i)).toBeInTheDocument();
 
     userEvent.click(screen.getByText(/Отправить отзыв/i));
-    expect(useDispatch).toBeCalledTimes(1);
+    expect(useDispatch).toBeCalledTimes(2);
   });
 });

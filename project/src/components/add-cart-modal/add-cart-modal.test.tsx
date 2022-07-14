@@ -1,16 +1,22 @@
 import { BrowserRouter } from 'react-router-dom';
 import AddCartModal from './add-cart-modal';
 import { render, screen } from '@testing-library/react';
-import { fakeGuitarData } from '../../utils/mocks';
+import { fakeCartList, fakeGuitarData } from '../../utils/mocks';
 import { Provider } from 'react-redux';
 import { configureMockStore } from '@jedmao/redux-mock-store';
+import { NameSpace } from '../../const';
 
 describe('component: AddCartModal', () => {
   it('Should render correctly', () => {
     const mockStore = configureMockStore();
+    const store = mockStore({
+      [NameSpace.cart]: {
+        cartList: fakeCartList,
+      },
+    });
 
     render(
-      <Provider store={mockStore()}>
+      <Provider store={store}>
         <BrowserRouter >
           <AddCartModal guitar={fakeGuitarData} />
         </BrowserRouter>

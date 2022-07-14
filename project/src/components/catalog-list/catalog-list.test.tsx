@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom';
 import CatalogList from './catalog-list';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { fakeGuitars, fakeGuitarsComments } from '../../utils/mocks';
+import { fakeCartList, fakeGuitars, fakeGuitarsComments } from '../../utils/mocks';
 import { NameSpace, Sorting } from '../../const';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { createAPI } from '../../services/api';
@@ -18,6 +18,12 @@ const store = mockStore({
     guitarsComments: fakeGuitarsComments,
     loading: false,
     currentCatalogPage: 1,
+  },
+  [NameSpace.cart]: {
+    cartList: fakeCartList,
+  },
+  [NameSpace.catalogFilter]: {
+    guitarType: null,
   },
 });
 

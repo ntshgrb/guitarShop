@@ -26,7 +26,7 @@ function Comments({ setModalIsVisible }: CommentsProps): JSX.Element | null {
     return null;
   }
 
-  const onUpButtonClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const onUpButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     window.scrollTo({
@@ -38,13 +38,12 @@ function Comments({ setModalIsVisible }: CommentsProps): JSX.Element | null {
   return (
     <section className="reviews">
       <h3 className="reviews__title title title--bigger">Отзывы</h3>
-      <a
+      <button
         onClick={() => setModalIsVisible(true)}
         className="button button--red-border button--big reviews__sumbit-button"
-        href="#"
       >
         Оставить отзыв
-      </a>
+      </button>
 
       {
         comments.map(( comment ) => (
@@ -80,12 +79,12 @@ function Comments({ setModalIsVisible }: CommentsProps): JSX.Element | null {
           Показать еще отзывы
       </button>
 
-      <a
+      <button
         onClick={onUpButtonClick}
         className="button button--up button--red-border button--big reviews__up-button"
       >
         Наверх
-      </a>
+      </button>
     </section>
   );
 }

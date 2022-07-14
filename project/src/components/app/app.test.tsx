@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { AppRoute, NameSpace } from '../../const';
 import { createAPI } from '../../services/api';
-import { fakeGuitars, fakeGuitarsComments, fakeComments, fakeGuitarData } from '../../utils/mocks';
+import { fakeGuitars, fakeGuitarsComments, fakeComments, fakeGuitarData, fakeCartItem } from '../../utils/mocks';
 import HistoryRouter from '../history-router/history-router';
 import App from './app';
 import thunk from 'redux-thunk';
@@ -24,6 +24,16 @@ const store = mockStore({
   },
   [NameSpace.utils]: {
     addToCartModal: false,
+  },
+  [NameSpace.cart]: {
+    cartList: [fakeCartItem],
+    coupon: null,
+  },
+  [NameSpace.catalogFilter]: {
+    priceRange: {
+      minPrice: 1700,
+      maxPrice: 15000,
+    },
   },
 });
 const history = createMemoryHistory();
@@ -83,6 +93,13 @@ describe('Application Routing', () => {
       },
       [NameSpace.utils]: {
         addToCartModal: false,
+      },
+      [NameSpace.cart]: {
+        cartList: [fakeCartItem],
+        coupon: null,
+      },
+      [NameSpace.guitars]: {
+        guitarsList: fakeGuitars,
       },
     });
 

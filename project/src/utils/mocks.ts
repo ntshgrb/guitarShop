@@ -2,6 +2,7 @@ import { Guitar } from '../types/guitar';
 import { datatype } from 'faker';
 import { UserComment } from '../types/comment';
 import { CommentPost } from '../types/comment-post';
+import { CartItem } from '../types/cart-item';
 
 export const makeFakeGuitar = (): Guitar => ({
   id: datatype.number(),
@@ -38,8 +39,15 @@ export const createCommentPost = (): CommentPost => ({
   onSuccess: jest.fn(),
 });
 
+export const makeFakeCartItem = (): CartItem => ({
+  id: datatype.number(),
+  product: makeFakeGuitar(),
+  quantity: datatype.number(),
+});
+
 export const fakeGuitars =  new Array(10).fill(null).map(() => makeFakeGuitar());
 export const fakeComments =  new Array(10).fill(null).map(() => makeFakeComment());
+export const fakeCartList =  new Array(3).fill(null).map(() => makeFakeCartItem());
 
 export const fakeGuitarsComments = {
   [datatype.string()]: [...fakeGuitars],
@@ -63,4 +71,17 @@ export const fakeCartItem = {
   id: 1,
   product: fakeGuitarData,
   quantity: 1,
+};
+
+export const fakeItemToDelete = {
+  image: {
+    src: datatype.string(),
+    srcSet: datatype.string(),
+  },
+  price: datatype.string(),
+  name: datatype.string(),
+  stringCount: datatype.number(),
+  vendorCode: datatype.string(),
+  itemType: datatype.string(),
+  id: datatype.number(),
 };
