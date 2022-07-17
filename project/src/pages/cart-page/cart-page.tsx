@@ -41,6 +41,11 @@ function CartPage(): JSX.Element {
     }
   };
 
+  const onCouponChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    couponRef.current?.setCustomValidity('');
+    couponRef.current?.reportValidity();
+  };
+
   return (
     <main className="page-content">
       <div className="container">
@@ -69,7 +74,12 @@ function CartPage(): JSX.Element {
               >
                 <div className="form-input coupon__input">
                   <label className="visually-hidden">Промокод</label>
-                  <input ref={couponRef} type="text" placeholder="Введите промокод" id="coupon" name="coupon" />
+                  <input onChange={onCouponChange}
+                    ref={couponRef}
+                    type="text"
+                    placeholder="Введите промокод"
+                    id="coupon" name="coupon"
+                  />
                   {
                     couponIsPosted ?
                       <p className={`form-input__message ${couponIsPosted.class}`}>{couponIsPosted.title}</p> :
