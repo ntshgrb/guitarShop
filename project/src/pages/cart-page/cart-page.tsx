@@ -28,22 +28,10 @@ function CartPage(): JSX.Element {
 
   const oCouponSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    if(couponRef.current?.value.includes(' ')) {
-      couponRef.current.setCustomValidity('Промокод не может содержать пробелов');
-    } else {
-      couponRef.current?.setCustomValidity('');
+    if(couponRef.current?.value) {
+      const coupon = couponRef.current?.value.trim();
+      dispatch(postCouponAction({coupon, setCouponIsPosted: setCouponIsPosted}));
     }
-    couponRef.current?.reportValidity();
-
-    if(!couponRef.current?.value.includes(' ') && couponRef.current?.value) {
-      dispatch(postCouponAction({coupon: couponRef.current?.value, setCouponIsPosted: setCouponIsPosted}));
-    }
-  };
-
-  const onCouponChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    couponRef.current?.setCustomValidity('');
-    couponRef.current?.reportValidity();
   };
 
   return (
@@ -74,7 +62,7 @@ function CartPage(): JSX.Element {
               >
                 <div className="form-input coupon__input">
                   <label className="visually-hidden">Промокод</label>
-                  <input onChange={onCouponChange}
+                  <input
                     ref={couponRef}
                     type="text"
                     placeholder="Введите промокод"
